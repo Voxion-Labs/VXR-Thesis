@@ -259,6 +259,16 @@ The full license text is available in the [LICENSE](LICENSE) directive.
 
 ---
 
+<br>
+<div align="right">
+  <b>Rudranarayan Jena</b><br>
+  <i>Founder @ Voxion Labs</i>
+</div>
+
+---
+<div align="center">
+  (c) 2026 Voxion Labs & Rudranarayan Jena
+</div>
 <p align="center">
-  <strong>Voxion Labs</strong> · Applied Research · Zero-Backend · WebAssembly · C++17
+ Applied Research · Zero-Backend · WebAssembly · C++17
 </p>
