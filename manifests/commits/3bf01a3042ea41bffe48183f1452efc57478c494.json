@@ -1,0 +1,85 @@
+{
+  "sha": "3bf01a3042ea41bffe48183f1452efc57478c494",
+  "short_sha": "3bf01a3",
+  "tree": "bf27c28da2c8527ccc5e7d5cffac30beda5ffd33",
+  "parents": [
+    "50b538873c2e0e5bf9e64723f35cadcd037b83de"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-09T15:21:26+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-09T15:21:26+05:30"
+  },
+  "subject": "feat(phase-1): core C++ systems engine, zero-copy ring buffer, O(1) allocators, and test suite",
+  "body": "",
+  "message": "feat(phase-1): core C++ systems engine, zero-copy ring buffer, O(1) allocators, and test suite",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/3bf01a3042ea41bffe48183f1452efc57478c494",
+  "stats": {
+    "files_changed": 12,
+    "insertions": 894,
+    "deletions": 14
+  },
+  "files_count": 12,
+  "files": [
+    {
+      "status": "M",
+      "path": ".github/workflows/ci.yml"
+    },
+    {
+      "status": "M",
+      "path": "Makefile"
+    },
+    {
+      "status": "M",
+      "path": "core-cpp/CMakeLists.txt"
+    },
+    {
+      "status": "M",
+      "path": "core-cpp/include/custom_allocator.hpp"
+    },
+    {
+      "status": "M",
+      "path": "core-cpp/include/vxr_kernel.hpp"
+    },
+    {
+      "status": "M",
+      "path": "core-cpp/include/zero_copy_stream.hpp"
+    },
+    {
+      "status": "M",
+      "path": "core-cpp/scripts/build_wasm.sh"
+    },
+    {
+      "status": "M",
+      "path": "core-cpp/src/bindings.cpp"
+    },
+    {
+      "status": "M",
+      "path": "core-cpp/src/custom_allocator.cpp"
+    },
+    {
+      "status": "M",
+      "path": "core-cpp/src/vxr_kernel.cpp"
+    },
+    {
+      "status": "M",
+      "path": "core-cpp/src/zero_copy_stream.cpp"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/tests/test_kernel.cpp"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-09T09:51:38.443058+00:00",
+    "generator_version": "1.0.0"
+  }
+}
