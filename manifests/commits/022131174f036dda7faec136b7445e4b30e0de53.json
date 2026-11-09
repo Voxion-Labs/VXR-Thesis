@@ -1,0 +1,321 @@
+{
+  "sha": "022131174f036dda7faec136b7445e4b30e0de53",
+  "short_sha": "0221311",
+  "tree": "b526d364cab61da16cb6cfeafccda92252d056d6",
+  "parents": [
+    "427b277c72dff872f55e1d2812c5857d321faa94"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-09T15:04:52+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-09T15:04:52+05:30"
+  },
+  "subject": "feat: add ci-cd pipelines, commit manifest bot, makefile, and refactor architecture",
+  "body": "",
+  "message": "feat: add ci-cd pipelines, commit manifest bot, makefile, and refactor architecture",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/022131174f036dda7faec136b7445e4b30e0de53",
+  "stats": {
+    "files_changed": 71,
+    "insertions": 1079,
+    "deletions": 4073
+  },
+  "files_count": 71,
+  "files": [
+    {
+      "status": "A",
+      "path": ".github/SECURITY_PERMISSIONS.md"
+    },
+    {
+      "status": "A",
+      "path": ".github/workflows/build_wasm.yml"
+    },
+    {
+      "status": "A",
+      "path": ".github/workflows/ci.yml"
+    },
+    {
+      "status": "A",
+      "path": ".github/workflows/commit_manifest.yml"
+    },
+    {
+      "status": "D",
+      "path": ".github/workflows/deploy-pages.yml"
+    },
+    {
+      "status": "A",
+      "path": ".github/workflows/deploy_render.yml"
+    },
+    {
+      "status": "M",
+      "path": ".gitignore"
+    },
+    {
+      "status": "D",
+      "path": "CONTRIBUTING.md"
+    },
+    {
+      "status": "D",
+      "path": "DEPLOY.md"
+    },
+    {
+      "status": "A",
+      "path": "Dockerfile"
+    },
+    {
+      "status": "M",
+      "path": "LICENSE"
+    },
+    {
+      "status": "A",
+      "path": "Makefile"
+    },
+    {
+      "status": "M",
+      "path": "README.md"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/requirements.txt"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/scripts/analyze_latency.py"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/scripts/plot_memory_isolation.py"
+    },
+    {
+      "status": "A",
+      "path": "cmd/vxr-server/main.go"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/CMakeLists.txt"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/include/custom_allocator.hpp"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/include/vxr_kernel.hpp"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/include/zero_copy_stream.hpp"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/scripts/build_wasm.sh"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/src/bindings.cpp"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/src/custom_allocator.cpp"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/src/vxr_kernel.cpp"
+    },
+    {
+      "status": "A",
+      "path": "core-cpp/src/zero_copy_stream.cpp"
+    },
+    {
+      "status": "A",
+      "path": "docker-compose.yml"
+    },
+    {
+      "status": "D",
+      "path": "docs/.nojekyll"
+    },
+    {
+      "status": "D",
+      "path": "docs/app.js"
+    },
+    {
+      "status": "D",
+      "path": "docs/index.html"
+    },
+    {
+      "status": "D",
+      "path": "docs/style.css"
+    },
+    {
+      "status": "D",
+      "path": "docs/vxr_kernel.js"
+    },
+    {
+      "status": "D",
+      "path": "docs/vxr_kernel.wasm"
+    },
+    {
+      "status": "D",
+      "path": "docs/whitepaper/VXR_Sandbox_Research.pdf"
+    },
+    {
+      "status": "A",
+      "path": "go.mod"
+    },
+    {
+      "status": "A",
+      "path": "internal/engine/executor.go"
+    },
+    {
+      "status": "A",
+      "path": "internal/engine/wasm_loader.go"
+    },
+    {
+      "status": "A",
+      "path": "internal/telemetry/csv_writer.go"
+    },
+    {
+      "status": "A",
+      "path": "internal/telemetry/monitor.go"
+    },
+    {
+      "status": "A",
+      "path": "internal/web/handlers.go"
+    },
+    {
+      "status": "A",
+      "path": "internal/web/router.go"
+    },
+    {
+      "status": "A",
+      "path": "manifests/commits/427b277c72dff872f55e1d2812c5857d321faa94.json"
+    },
+    {
+      "status": "A",
+      "path": "manifests/manifest.json"
+    },
+    {
+      "status": "D",
+      "path": "research/README.md"
+    },
+    {
+      "status": "D",
+      "path": "research/Voxion_Labs_Logo.png"
+    },
+    {
+      "status": "D",
+      "path": "research/arch_tree.png"
+    },
+    {
+      "status": "D",
+      "path": "research/generate_research_paper.py"
+    },
+    {
+      "status": "D",
+      "path": "research/generate_visuals.py"
+    },
+    {
+      "status": "D",
+      "path": "research/latency_chart.png"
+    },
+    {
+      "status": "D",
+      "path": "research/requirements.txt"
+    },
+    {
+      "status": "D",
+      "path": "research/rudranarayan_jena.png"
+    },
+    {
+      "status": "D",
+      "path": "scripts/build_all.ps1"
+    },
+    {
+      "status": "D",
+      "path": "scripts/build_pdf.ps1"
+    },
+    {
+      "status": "D",
+      "path": "scripts/build_wasm.ps1"
+    },
+    {
+      "status": "D",
+      "path": "scripts/build_wasm.sh"
+    },
+    {
+      "status": "A",
+      "path": "scripts/generate_manifest.py"
+    },
+    {
+      "status": "D",
+      "path": "src-cpp/vxr_kernel.cpp"
+    },
+    {
+      "status": "D",
+      "path": "src-cpp/vxr_kernel.h"
+    },
+    {
+      "status": "A",
+      "path": "thesis/hypothesis.md"
+    },
+    {
+      "status": "A",
+      "path": "thesis/main.tex"
+    },
+    {
+      "status": "A",
+      "path": "thesis/references.bib"
+    },
+    {
+      "status": "A",
+      "path": "thesis/sections/01_abstract.tex"
+    },
+    {
+      "status": "A",
+      "path": "thesis/sections/02_introduction.tex"
+    },
+    {
+      "status": "A",
+      "path": "thesis/sections/03_architecture.tex"
+    },
+    {
+      "status": "A",
+      "path": "thesis/sections/04_methodology.tex"
+    },
+    {
+      "status": "A",
+      "path": "thesis/sections/05_results.tex"
+    },
+    {
+      "status": "A",
+      "path": "thesis/sections/06_conclusion.tex"
+    },
+    {
+      "status": "A",
+      "path": "web/static/css/style.css"
+    },
+    {
+      "status": "A",
+      "path": "web/templates/index.html"
+    },
+    {
+      "status": "A",
+      "path": "web/templates/partials/latency_metrics.html"
+    },
+    {
+      "status": "A",
+      "path": "web/templates/partials/memory_chart.html"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-09T09:35:05.117883+00:00",
+    "generator_version": "1.0.0"
+  }
+}

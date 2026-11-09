@@ -2,10 +2,21 @@
   "schema_version": "1.0.0",
   "repository": "Voxion-Labs/VXR-Thesis",
   "branch": "main",
-  "last_updated": "2026-11-09T09:31:27.604326+00:00",
-  "total_commits": 1,
-  "latest_sha": "427b277c72dff872f55e1d2812c5857d321faa94",
+  "last_updated": "2026-11-09T09:35:05.118144+00:00",
+  "total_commits": 2,
+  "latest_sha": "022131174f036dda7faec136b7445e4b30e0de53",
   "commits": [
+    {
+      "sha": "022131174f036dda7faec136b7445e4b30e0de53",
+      "short_sha": "0221311",
+      "date": "2026-11-09T15:04:52+05:30",
+      "author": "liambrooks-lab",
+      "subject": "feat: add ci-cd pipelines, commit manifest bot, makefile, and refactor architecture",
+      "files_changed": 71,
+      "insertions": 1079,
+      "deletions": 4073,
+      "manifest_file": "manifests/commits/022131174f036dda7faec136b7445e4b30e0de53.json"
+    },
     {
       "sha": "427b277c72dff872f55e1d2812c5857d321faa94",
       "short_sha": "427b277",
