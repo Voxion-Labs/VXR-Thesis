@@ -1,0 +1,30 @@
+name: Build Wasm
+
+on:
+  push:
+    paths:
+      - 'core-cpp/**'
+      - '.github/workflows/build_wasm.yml'
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'core-cpp/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-wasm:
+    name: Build WebAssembly Kernel
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Make Build Script Executable
+        run: chmod +x core-cpp/scripts/build_wasm.sh
+
+      - name: Run Build Script
+        run: ./core-cpp/scripts/build_wasm.sh

@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "branch": "main",
+  "last_updated": "2026-11-09T09:31:27.604326+00:00",
+  "total_commits": 1,
+  "latest_sha": "427b277c72dff872f55e1d2812c5857d321faa94",
+  "commits": [
+    {
+      "sha": "427b277c72dff872f55e1d2812c5857d321faa94",
+      "short_sha": "427b277",
+      "date": "2026-09-30T11:07:45+05:30",
+      "author": "Rudranarayan Jena",
+      "subject": "Update README with founder and copyright details",
+      "files_changed": 27,
+      "insertions": 4129,
+      "deletions": 0,
+      "manifest_file": "manifests/commits/427b277c72dff872f55e1d2812c5857d321faa94.json"
+    }
+  ]
+}

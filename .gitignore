@@ -1,21 +1,49 @@
-node_modules/
-.DS_Store
-.emsdk/
-.tools/
+# VXR-Thesis .gitignore
+
+# Binaries and compiled objects
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.a
+*.o
+*.obj
+/vxr-server
+/bin/
+
+# Go artifacts
+*.out
+vendor/
+
+# Python artifacts
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+venv/
+.venv/
+env/
 
-# LaTeX aux
-research/*.aux
-research/*.log
-research/*.out
-research/*.bbl
-research/*.blg
-research/*.synctex.gz
-
-# Ignore generated JS/Wasm except deployed site artifacts
+# C++ / CMake build outputs
+build/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile.cmake
 *.wasm
-!docs/vxr_kernel.wasm
-*.js
-!docs/app.js
-!docs/vxr_kernel.js
+!/web/static/wasm/.gitkeep
+
+# Data and telemetry
+/benchmarks/data/*
+!/benchmarks/data/.gitkeep
+
+# IDE and OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo

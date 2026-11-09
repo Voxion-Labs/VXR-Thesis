@@ -1,0 +1,143 @@
+{
+  "sha": "427b277c72dff872f55e1d2812c5857d321faa94",
+  "short_sha": "427b277",
+  "tree": "61729242b9db430fa3b4b3583149c7105a049c9a",
+  "parents": [],
+  "author": {
+    "name": "Rudranarayan Jena",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-09-30T11:07:45+05:30"
+  },
+  "committer": {
+    "name": "GitHub",
+    "email": "noreply@github.com",
+    "date": "2026-09-30T11:07:45+05:30"
+  },
+  "subject": "Update README with founder and copyright details",
+  "body": "Added founder information and copyright notice.",
+  "message": "Update README with founder and copyright details\n\nAdded founder information and copyright notice.",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/427b277c72dff872f55e1d2812c5857d321faa94",
+  "stats": {
+    "files_changed": 27,
+    "insertions": 4129,
+    "deletions": 0
+  },
+  "files_count": 27,
+  "files": [
+    {
+      "status": "A",
+      "path": ".github/workflows/deploy-pages.yml"
+    },
+    {
+      "status": "A",
+      "path": ".gitignore"
+    },
+    {
+      "status": "A",
+      "path": "CONTRIBUTING.md"
+    },
+    {
+      "status": "A",
+      "path": "DEPLOY.md"
+    },
+    {
+      "status": "A",
+      "path": "LICENSE"
+    },
+    {
+      "status": "A",
+      "path": "README.md"
+    },
+    {
+      "status": "A",
+      "path": "docs/.nojekyll"
+    },
+    {
+      "status": "A",
+      "path": "docs/app.js"
+    },
+    {
+      "status": "A",
+      "path": "docs/index.html"
+    },
+    {
+      "status": "A",
+      "path": "docs/style.css"
+    },
+    {
+      "status": "A",
+      "path": "docs/vxr_kernel.js"
+    },
+    {
+      "status": "A",
+      "path": "docs/vxr_kernel.wasm"
+    },
+    {
+      "status": "A",
+      "path": "docs/whitepaper/VXR_Sandbox_Research.pdf"
+    },
+    {
+      "status": "A",
+      "path": "research/README.md"
+    },
+    {
+      "status": "A",
+      "path": "research/Voxion_Labs_Logo.png"
+    },
+    {
+      "status": "A",
+      "path": "research/arch_tree.png"
+    },
+    {
+      "status": "A",
+      "path": "research/generate_research_paper.py"
+    },
+    {
+      "status": "A",
+      "path": "research/generate_visuals.py"
+    },
+    {
+      "status": "A",
+      "path": "research/latency_chart.png"
+    },
+    {
+      "status": "A",
+      "path": "research/requirements.txt"
+    },
+    {
+      "status": "A",
+      "path": "research/rudranarayan_jena.png"
+    },
+    {
+      "status": "A",
+      "path": "scripts/build_all.ps1"
+    },
+    {
+      "status": "A",
+      "path": "scripts/build_pdf.ps1"
+    },
+    {
+      "status": "A",
+      "path": "scripts/build_wasm.ps1"
+    },
+    {
+      "status": "A",
+      "path": "scripts/build_wasm.sh"
+    },
+    {
+      "status": "A",
+      "path": "src-cpp/vxr_kernel.cpp"
+    },
+    {
+      "status": "A",
+      "path": "src-cpp/vxr_kernel.h"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "github-actions[bot]",
+    "recorded_at": "2026-11-09T09:31:27.600434+00:00",
+    "generator_version": "1.0.0"
+  }
+}
