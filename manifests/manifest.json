@@ -2,10 +2,21 @@
   "schema_version": "1.0.0",
   "repository": "Voxion-Labs/VXR-Thesis",
   "branch": "main",
-  "last_updated": "2026-11-09T09:51:38.443304+00:00",
-  "total_commits": 3,
-  "latest_sha": "3bf01a3042ea41bffe48183f1452efc57478c494",
+  "last_updated": "2026-11-09T09:58:10.790018+00:00",
+  "total_commits": 4,
+  "latest_sha": "91f2f5899a7f2516d21bcfe05aca6334513c006a",
   "commits": [
+    {
+      "sha": "91f2f5899a7f2516d21bcfe05aca6334513c006a",
+      "short_sha": "91f2f58",
+      "date": "2026-11-09T15:27:57+05:30",
+      "author": "liambrooks-lab",
+      "subject": "feat(phase-2): standalone Wasm binary artifact, linear memory contracts, and ABI validator",
+      "files_changed": 6,
+      "insertions": 707,
+      "deletions": 7,
+      "manifest_file": "manifests/commits/91f2f5899a7f2516d21bcfe05aca6334513c006a.json"
+    },
     {
       "sha": "3bf01a3042ea41bffe48183f1452efc57478c494",
       "short_sha": "3bf01a3",

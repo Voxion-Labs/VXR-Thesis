@@ -1,0 +1,61 @@
+{
+  "sha": "91f2f5899a7f2516d21bcfe05aca6334513c006a",
+  "short_sha": "91f2f58",
+  "tree": "7a6ef0bc38cd40a0fdf23e32ea65fd67df003174",
+  "parents": [
+    "5d74c2f39b4add51dabf6200a3914556cef830b5"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-09T15:27:57+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-09T15:27:57+05:30"
+  },
+  "subject": "feat(phase-2): standalone Wasm binary artifact, linear memory contracts, and ABI validator",
+  "body": "",
+  "message": "feat(phase-2): standalone Wasm binary artifact, linear memory contracts, and ABI validator",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/91f2f5899a7f2516d21bcfe05aca6334513c006a",
+  "stats": {
+    "files_changed": 6,
+    "insertions": 707,
+    "deletions": 7
+  },
+  "files_count": 6,
+  "files": [
+    {
+      "status": "M",
+      "path": ".github/workflows/build_wasm.yml"
+    },
+    {
+      "status": "M",
+      "path": ".gitignore"
+    },
+    {
+      "status": "M",
+      "path": "Makefile"
+    },
+    {
+      "status": "A",
+      "path": "scripts/compile_wasm_kernel.py"
+    },
+    {
+      "status": "A",
+      "path": "scripts/verify_wasm.py"
+    },
+    {
+      "status": "A",
+      "path": "web/static/wasm/vxr_kernel.wasm"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-09T09:58:10.789735+00:00",
+    "generator_version": "1.0.0"
+  }
+}
