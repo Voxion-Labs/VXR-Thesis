@@ -4,12 +4,15 @@ on:
   push:
     paths:
       - 'core-cpp/**'
+      - 'scripts/compile_wasm_kernel.py'
+      - 'scripts/verify_wasm.py'
       - '.github/workflows/build_wasm.yml'
     branches:
       - main
   pull_request:
     paths:
       - 'core-cpp/**'
+      - 'scripts/**'
   workflow_dispatch:
 
 permissions:
@@ -17,14 +20,30 @@ permissions:
 
 jobs:
   build-wasm:
-    name: Build WebAssembly Kernel
+    name: Build & Verify WebAssembly Kernel
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set up Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 3.1.56
+
+      - name: Verify Emscripten
+        run: emcc -v
+
       - name: Make Build Script Executable
         run: chmod +x core-cpp/scripts/build_wasm.sh
 
-      - name: Run Build Script
+      - name: Run Emscripten Build Script
         run: ./core-cpp/scripts/build_wasm.sh
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify WebAssembly Binary ABI
+        run: python scripts/verify_wasm.py

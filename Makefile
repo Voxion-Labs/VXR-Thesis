@@ -15,7 +15,7 @@ else
   COMMIT_MSG := $(MSG)
 endif
 
-.PHONY: help push rebase sync manifest manifest-backfill build-wasm run-server analyze test test-cpp status
+.PHONY: help push rebase sync manifest manifest-backfill build-wasm verify-wasm run-server analyze test test-cpp status
 
 # Default target
 all: help
@@ -72,10 +72,16 @@ status:
 # Build, Run, and Benchmark Targets
 # ------------------------------------------------------------------------------
 
-## build-wasm: Compile C++ kernel to WebAssembly
+## build-wasm: Compile/synthesize C++ kernel to WebAssembly
 build-wasm:
 	@echo [VXR] Building VXR WebAssembly kernel...
-	./core-cpp/scripts/build_wasm.sh
+	python scripts/compile_wasm_kernel.py
+	python scripts/verify_wasm.py
+
+## verify-wasm: Validate WebAssembly binary ABI compliance
+verify-wasm:
+	@echo [VXR] Validating WebAssembly binary ABI...
+	python scripts/verify_wasm.py
 
 ## run-server: Start the Go orchestrator server
 run-server:
@@ -92,8 +98,8 @@ test-cpp:
 	@echo [VXR] Compiling and running native C++ systems verification suite...
 	@g++ -std=c++17 -O3 -Icore-cpp/include core-cpp/src/*.cpp core-cpp/tests/test_kernel.cpp -o test_kernel_run.exe && test_kernel_run.exe && python -c "import os; os.remove('test_kernel_run.exe') if os.path.exists('test_kernel_run.exe') else None"
 
-## test: Vet Go codebase, execute C++ tests, and verify Python scripts
-test: test-cpp
+## test: Vet Go codebase, execute C++ tests, verify Wasm ABI, and verify Python scripts
+test: test-cpp verify-wasm
 	@echo [VXR] Vetting Go code...
 	go vet ./...
 	@echo [VXR] Testing Go packages...

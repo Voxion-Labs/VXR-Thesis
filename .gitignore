@@ -34,6 +34,7 @@ CMakeFiles/
 cmake_install.cmake
 Makefile.cmake
 *.wasm
+!/web/static/wasm/vxr_kernel.wasm
 !/web/static/wasm/.gitkeep
 
 # Data and telemetry
