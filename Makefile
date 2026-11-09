@@ -15,7 +15,7 @@ else
   COMMIT_MSG := $(MSG)
 endif
 
-.PHONY: help push rebase sync manifest manifest-backfill build-wasm run-server analyze test status
+.PHONY: help push rebase sync manifest manifest-backfill build-wasm run-server analyze test test-cpp status
 
 # Default target
 all: help
@@ -87,8 +87,13 @@ analyze:
 	@echo [VXR] Running latency benchmarks...
 	python benchmarks/scripts/analyze_latency.py
 
-## test: Vet Go codebase and verify Python scripts
-test:
+## test-cpp: Compile and execute native C++ allocator and kernel verification tests
+test-cpp:
+	@echo [VXR] Compiling and running native C++ systems verification suite...
+	@g++ -std=c++17 -O3 -Icore-cpp/include core-cpp/src/*.cpp core-cpp/tests/test_kernel.cpp -o test_kernel_run.exe && test_kernel_run.exe && python -c "import os; os.remove('test_kernel_run.exe') if os.path.exists('test_kernel_run.exe') else None"
+
+## test: Vet Go codebase, execute C++ tests, and verify Python scripts
+test: test-cpp
 	@echo [VXR] Vetting Go code...
 	go vet ./...
 	@echo [VXR] Testing Go packages...
@@ -116,5 +121,6 @@ help:
 	@echo   build-wasm         Build C++ kernel into WebAssembly
 	@echo   run-server         Run Go orchestrator web server
 	@echo   analyze            Execute Python latency benchmarks
-	@echo   test               Run Go vet, Go tests, and Python syntax checks
+	@echo   test-cpp           Compile and execute native C++ allocator and kernel tests
+	@echo   test               Run C++ tests, Go vet, Go tests, and Python syntax checks
 	@echo   help               Display this help text

@@ -74,7 +74,10 @@ jobs:
         run: cmake -B build -S core-cpp
 
       - name: Build C++ Targets
-        run: cmake --build build || true
+        run: cmake --build build
+
+      - name: Execute Native Systems Verification Suite
+        run: ./build/test_kernel
 
   verify-manifest-tooling:
     name: Verify Commit Manifest Tooling
