@@ -1,0 +1,89 @@
+{
+  "sha": "67ee7cbffe8068f2b66a852f6b5ad8887ce90ce5",
+  "short_sha": "67ee7cb",
+  "tree": "05194e0c6c40cc0a969d8e77bf686c7f34f978b5",
+  "parents": [
+    "c88748ca1467420d9f98436ca2fdb09cd4fc91f8"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T12:22:48+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T12:22:48+05:30"
+  },
+  "subject": "feat(phase-3): Go Wasm execution engine, load injector, and telemetry harness",
+  "body": "",
+  "message": "feat(phase-3): Go Wasm execution engine, load injector, and telemetry harness",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/67ee7cbffe8068f2b66a852f6b5ad8887ce90ce5",
+  "stats": {
+    "files_changed": 13,
+    "insertions": 1255,
+    "deletions": 46
+  },
+  "files_count": 13,
+  "files": [
+    {
+      "status": "M",
+      "path": "cmd/vxr-server/main.go"
+    },
+    {
+      "status": "M",
+      "path": "go.mod"
+    },
+    {
+      "status": "A",
+      "path": "go.sum"
+    },
+    {
+      "status": "A",
+      "path": "internal/engine/engine_test.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/engine/executor.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/engine/wasm_loader.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/telemetry/csv_writer.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/telemetry/monitor.go"
+    },
+    {
+      "status": "A",
+      "path": "internal/telemetry/telemetry_test.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/web/handlers.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/web/router.go"
+    },
+    {
+      "status": "M",
+      "path": "scripts/compile_wasm_kernel.py"
+    },
+    {
+      "status": "M",
+      "path": "web/static/wasm/vxr_kernel.wasm"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-10T06:53:00.948173+00:00",
+    "generator_version": "1.0.0"
+  }
+}
