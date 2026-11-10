@@ -15,7 +15,7 @@ else
   COMMIT_MSG := $(MSG)
 endif
 
-.PHONY: help push rebase sync manifest manifest-backfill build-wasm verify-wasm run-server analyze test test-cpp status
+.PHONY: help push rebase sync manifest manifest-backfill build-wasm verify-wasm run-server benchmark analyze test test-cpp status
 
 # Default target
 all: help
@@ -88,10 +88,16 @@ run-server:
 	@echo [VXR] Starting VXR-Thesis server...
 	go run cmd/vxr-server/main.go
 
-## analyze: Run empirical latency data analysis benchmark
+## benchmark: Execute full empirical parameter matrix and generate publication plots
+benchmark:
+	@echo [VXR] Executing full systems benchmark matrix...
+	python scripts/run_benchmarks.py
+
+## analyze: Run empirical statistical analysis and generate vector plots
 analyze:
-	@echo [VXR] Running latency benchmarks...
+	@echo [VXR] Running empirical statistical analysis and plot generators...
 	python benchmarks/scripts/analyze_latency.py
+	python benchmarks/scripts/plot_memory_isolation.py
 
 ## test-cpp: Compile and execute native C++ allocator and kernel verification tests
 test-cpp:
@@ -125,8 +131,10 @@ help:
 	@echo.
 	@echo Development Targets:
 	@echo   build-wasm         Build C++ kernel into WebAssembly
+	@echo   verify-wasm        Validate WebAssembly binary ABI compliance
 	@echo   run-server         Run Go orchestrator web server
-	@echo   analyze            Execute Python latency benchmarks
+	@echo   benchmark          Execute full empirical parameter matrix and generate plots
+	@echo   analyze            Run empirical statistical analysis and generate vector plots
 	@echo   test-cpp           Compile and execute native C++ allocator and kernel tests
 	@echo   test               Run C++ tests, Go vet, Go tests, and Python syntax checks
 	@echo   help               Display this help text
