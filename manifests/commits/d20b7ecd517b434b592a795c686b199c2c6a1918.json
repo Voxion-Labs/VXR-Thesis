@@ -1,0 +1,81 @@
+{
+  "sha": "d20b7ecd517b434b592a795c686b199c2c6a1918",
+  "short_sha": "d20b7ec",
+  "tree": "f6da7bf81a9d5bd8bc7d56eb3fa88d8bca827f81",
+  "parents": [
+    "06b1b24e35cc1cf53e6b21b48469503b1e481135"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T12:44:02+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T12:44:02+05:30"
+  },
+  "subject": "feat(phase-6): formal academic thesis paper in LaTeX with empirical figures and mathematical proofs",
+  "body": "",
+  "message": "feat(phase-6): formal academic thesis paper in LaTeX with empirical figures and mathematical proofs",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/d20b7ecd517b434b592a795c686b199c2c6a1918",
+  "stats": {
+    "files_changed": 11,
+    "insertions": 495,
+    "deletions": 14
+  },
+  "files_count": 11,
+  "files": [
+    {
+      "status": "M",
+      "path": "Makefile"
+    },
+    {
+      "status": "A",
+      "path": "scripts/verify_thesis.py"
+    },
+    {
+      "status": "M",
+      "path": "thesis/hypothesis.md"
+    },
+    {
+      "status": "M",
+      "path": "thesis/main.tex"
+    },
+    {
+      "status": "M",
+      "path": "thesis/references.bib"
+    },
+    {
+      "status": "M",
+      "path": "thesis/sections/01_abstract.tex"
+    },
+    {
+      "status": "M",
+      "path": "thesis/sections/02_introduction.tex"
+    },
+    {
+      "status": "M",
+      "path": "thesis/sections/03_architecture.tex"
+    },
+    {
+      "status": "M",
+      "path": "thesis/sections/04_methodology.tex"
+    },
+    {
+      "status": "M",
+      "path": "thesis/sections/05_results.tex"
+    },
+    {
+      "status": "M",
+      "path": "thesis/sections/06_conclusion.tex"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-10T07:14:17.365413+00:00",
+    "generator_version": "1.0.0"
+  }
+}

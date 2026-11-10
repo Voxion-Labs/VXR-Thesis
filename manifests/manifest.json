@@ -2,10 +2,21 @@
   "schema_version": "1.0.0",
   "repository": "Voxion-Labs/VXR-Thesis",
   "branch": "main",
-  "last_updated": "2026-11-10T07:08:42.457928+00:00",
-  "total_commits": 7,
-  "latest_sha": "c49f3d700f36c0ad96b2bb401e8c5fac7e8c7943",
+  "last_updated": "2026-11-10T07:14:17.365647+00:00",
+  "total_commits": 8,
+  "latest_sha": "d20b7ecd517b434b592a795c686b199c2c6a1918",
   "commits": [
+    {
+      "sha": "d20b7ecd517b434b592a795c686b199c2c6a1918",
+      "short_sha": "d20b7ec",
+      "date": "2026-11-10T12:44:02+05:30",
+      "author": "liambrooks-lab",
+      "subject": "feat(phase-6): formal academic thesis paper in LaTeX with empirical figures and mathematical proofs",
+      "files_changed": 11,
+      "insertions": 495,
+      "deletions": 14,
+      "manifest_file": "manifests/commits/d20b7ecd517b434b592a795c686b199c2c6a1918.json"
+    },
     {
       "sha": "c49f3d700f36c0ad96b2bb401e8c5fac7e8c7943",
       "short_sha": "c49f3d7",
