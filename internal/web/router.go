@@ -15,10 +15,11 @@ func NewRouter(executor *engine.Executor, monitor *telemetry.Monitor, writer *te
 	// Dashboard page
 	mux.HandleFunc("/", handler.HandleIndex)
 
-	// HTMX polling fragments
+	// HTMX polling fragments & API endpoints
 	mux.HandleFunc("/api/metrics/latency", handler.HandleLatencyPartial)
 	mux.HandleFunc("/api/metrics/memory", handler.HandleMemoryPartial)
 	mux.HandleFunc("/api/metrics/json", handler.HandleMetricsJSON)
+	mux.HandleFunc("/api/benchmark/trigger", handler.HandleTriggerBenchmark)
 
 	// Static assets (CSS, static wasm)
 	fs := http.FileServer(http.Dir("web/static"))

@@ -1,9 +1,176 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>VXR-Thesis Live</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VXR-Thesis: Zero-Copy WebAssembly Systems Monitor</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Minimalist Zero-JS HTMX Runtime -->
+  <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
 </head>
 <body>
-<h1>VXR-Thesis: Execution Monitor</h1>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-title">
+      <h1>
+        <span>VXR-Thesis</span>
+        <span style="font-size: 13px; font-weight: normal; color: var(--text-dim);">| Systems Evaluation Engine</span>
+      </h1>
+      <p>
+        Evaluating Zero-Copy Execution and Custom Memory Allocation for Ultra-Low Latency WebAssembly Workloads in Constrained Edge Environments.
+      </p>
+    </div>
+    <div class="status-badge">
+      <div class="status-dot"></div>
+      <span>Edge Node: 512MB RAM Active</span>
+    </div>
+  </header>
+
+  <!-- Interactive Load Generator Control Panel -->
+  <section class="control-panel">
+    <form class="control-form" hx-post="/api/benchmark/trigger" hx-target="#benchmark-output" hx-indicator="#loading-spinner">
+      <div class="form-group">
+        <label for="mode">Execution Mode</label>
+        <select name="mode" id="mode">
+          <option value="both" selected>Dual Comparison (Baseline + Zero-Copy)</option>
+          <option value="zero_copy">Zero-Copy In-Place Only</option>
+          <option value="baseline_copy">Baseline (Copy + Alloc) Only</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="concurrency">Concurrency</label>
+        <select name="concurrency" id="concurrency">
+          <option value="1">1 Worker (Serial)</option>
+          <option value="4" selected>4 Workers (Constrained Core)</option>
+          <option value="8">8 Workers (Saturated)</option>
+          <option value="16">16 Workers (Heavy Contention)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="payload">Payload Size</label>
+        <select name="payload" id="payload">
+          <option value="64">64 Bytes (Tiny telemetry packet)</option>
+          <option value="512">512 Bytes (Standard event)</option>
+          <option value="4096" selected>4 KB (Page-aligned buffer)</option>
+          <option value="65536">64 KB (Streaming batch window)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="iterations">Iterations</label>
+        <select name="iterations" id="iterations">
+          <option value="1000">1,000 Invocations</option>
+          <option value="5000" selected>5,000 Invocations</option>
+          <option value="10000">10,000 Invocations</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-trigger">
+        Inject Workload
+      </button>
+
+      <span id="loading-spinner" class="htmx-indicator" style="color: var(--accent-cyan); font-size: 11px; margin-bottom: 8px;">
+        Executing workload in sandbox...
+      </span>
+    </form>
+  </section>
+
+  <!-- Live Systems Telemetry Grid -->
+  <main class="dashboard-grid">
+
+    <!-- Card 1: Latency Distribution -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Real-Time Latency Distributions</span>
+        <span class="card-badge">Poll: 1s</span>
+      </div>
+      <div id="latency-container" hx-get="/api/metrics/latency" hx-trigger="load, every 1s" hx-swap="innerHTML">
+        <div style="color: var(--text-dim); padding: 10px;">Initializing microsecond latency timers...</div>
+      </div>
+    </div>
+
+    <!-- Card 2: Memory Footprint & Isolation -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Edge Memory Pressure & Isolation</span>
+        <span class="card-badge">Ceiling: 512MB</span>
+      </div>
+      <div id="memory-container" hx-get="/api/metrics/memory" hx-trigger="load, every 1s" hx-swap="innerHTML">
+        <div style="color: var(--text-dim); padding: 10px;">Sampling runtime memory allocations...</div>
+      </div>
+    </div>
+
+    <!-- Card 3: Low-Level Architectural Invariants -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Guest Linear Memory ABI Contracts</span>
+        <span class="card-badge">Wasm 32-bit</span>
+      </div>
+      <table class="invariants-table">
+        <thead>
+          <tr>
+            <th>Subsystem</th>
+            <th>Offset Address</th>
+            <th>Allocation Bounds</th>
+            <th>Invariant Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Stack / Scratch</td>
+            <td><code>0x00000</code></td>
+            <td>64 KB (Page 0)</td>
+            <td><span class="tag-match">ALIGNED</span></td>
+          </tr>
+          <tr>
+            <td>Zero-Copy Ring Buffer</td>
+            <td><code>0x10000</code></td>
+            <td>256 KB (Pages 1-4)</td>
+            <td><span class="tag-match">DIRECT MAPPED</span></td>
+          </tr>
+          <tr>
+            <td>Monotonic Arena Pool</td>
+            <td><code>0x50000</code></td>
+            <td>512 KB (Pages 5-12)</td>
+            <td><span class="tag-match">O(1) BUMP</span></td>
+          </tr>
+          <tr>
+            <td>Fixed-Chunk Slab Pool</td>
+            <td><code>0xD0000</code></td>
+            <td>256 KB (Pages 13-16)</td>
+            <td><span class="tag-match">O(1) FREE-LIST</span></td>
+          </tr>
+          <tr>
+            <td>Algorithmic Checksum</td>
+            <td colspan="2">FNV-1a 64-bit In-Place Transformation</td>
+            <td><span class="tag-match">VERIFIED (0x9CF003B7...)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Card 4: Load Test Console Output -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Benchmark Console Output</span>
+        <span class="card-badge">Live Target</span>
+      </div>
+      <div id="benchmark-output" style="background: var(--bg-inner); border: 1px solid var(--border-dim); border-radius: 4px; padding: 12px; min-height: 140px; font-size: 11px; color: var(--text-muted); overflow-x: auto;">
+        Trigger a workload injection above to view real-time comparative benchmark statistics and tail latency deltas.
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>VXR-Thesis Applied Systems Research | Zero-Copy WebAssembly Execution</div>
+    <div>Telemetry Log: <code>benchmarks/data/telemetry.csv</code></div>
+    <div>Target: Linux / Render 512MB Edge Container Profile</div>
+  </footer>
+
 </body>
 </html>

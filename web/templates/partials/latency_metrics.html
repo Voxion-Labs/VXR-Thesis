@@ -1,1 +1,26 @@
-<!-- HTMX Latency Target -->
+<div class="metrics-grid">
+  <div class="metric-item">
+    <span class="metric-label">p50 Median Latency</span>
+    <span class="metric-value cyan">{{printf "%.2f" .P50LatencyUs}} µs</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">p95 Latency</span>
+    <span class="metric-value green">{{printf "%.2f" .P95LatencyUs}} µs</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">p99 Tail Latency</span>
+    <span class="metric-value amber">{{printf "%.2f" .P99LatencyUs}} µs</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">Throughput</span>
+    <span class="metric-value purple">{{printf "%.2f" .ThroughputMBps}} MB/s</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">Execution Velocity</span>
+    <span class="metric-value">{{printf "%.0f" .OpsPerSec}} ops/s</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">Total Ops (Zero-Copy / Base)</span>
+    <span class="metric-value">{{.ZeroCopyOps}} / {{.BaselineOps}}</span>
+  </div>
+</div>

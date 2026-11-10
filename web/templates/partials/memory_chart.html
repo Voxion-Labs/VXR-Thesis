@@ -1,1 +1,27 @@
-<!-- HTMX Memory Target -->
+<div class="gauge-wrapper">
+  <div class="gauge-labels">
+    <span>Edge Memory Utilization (512MB RAM Ceiling)</span>
+    <span><strong>{{printf "%.2f" .MemoryPressurePct}}%</strong></span>
+  </div>
+  <div class="gauge-bar-bg">
+    <div class="gauge-bar-fill" style="width: {{printf "%.1f" .MemoryPressurePct}}%;"></div>
+  </div>
+  <div class="memory-breakdown">
+    <div class="mem-stat">
+      <span>Go Heap Alloc:</span>
+      <span class="val">{{printf "%.2f" .HeapAllocMB}} MB</span>
+    </div>
+    <div class="mem-stat">
+      <span>OS Sys Memory:</span>
+      <span class="val">{{printf "%.2f" .SysMemMB}} MB</span>
+    </div>
+    <div class="mem-stat">
+      <span>Edge Headroom:</span>
+      <span class="val">{{printf "%.2f" (sub 512.0 .SysMemMB)}} MB</span>
+    </div>
+    <div class="mem-stat">
+      <span>GC Invocations:</span>
+      <span class="val">{{.NumGC}} cycles</span>
+    </div>
+  </div>
+</div>

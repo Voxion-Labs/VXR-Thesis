@@ -1,2 +1,327 @@
-/* VXR Minimal UI */
-body { background: #0a0a0a; color: #00ff00; font-family: monospace; }
+/* ==============================================================================
+   VXR-Thesis: Minimalist Systems Monitor Stylesheet
+   High-density, low-latency systems telemetry aesthetic
+   ============================================================================== */
+
+:root {
+  --bg-base: #080a0f;
+  --bg-card: #0f131a;
+  --bg-card-hover: #151b24;
+  --bg-inner: #0b0e14;
+  --border-dim: #1e2633;
+  --border-bright: #2d384a;
+  
+  --text-main: #e2e8f0;
+  --text-muted: #8b9bb4;
+  --text-dim: #4e5d78;
+
+  --accent-cyan: #00e5ff;
+  --accent-green: #00e676;
+  --accent-amber: #ffb300;
+  --accent-purple: #b388ff;
+  --accent-red: #ff5252;
+  
+  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", "Fira Code", Menlo, monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding: 24px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-dim);
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-title h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-title p {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 4px;
+  max-width: 800px;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-dim);
+  font-size: 11px;
+  color: var(--accent-green);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.9); }
+}
+
+/* Control Panel */
+.control-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.control-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+.form-group select,
+.form-group input {
+  background: var(--bg-inner);
+  border: 1px solid var(--border-bright);
+  color: var(--text-main);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+}
+
+.btn-trigger {
+  background: var(--accent-cyan);
+  color: #000;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-trigger:hover {
+  background: #33ebff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 6px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-dim);
+  padding-bottom: 10px;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-badge {
+  font-size: 10px;
+  color: var(--accent-purple);
+  background: var(--bg-inner);
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--border-bright);
+}
+
+/* Metrics Grid Inside Partial */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.metric-item {
+  background: var(--bg-inner);
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.metric-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.metric-value.cyan { color: var(--accent-cyan); }
+.metric-value.green { color: var(--accent-green); }
+.metric-value.amber { color: var(--accent-amber); }
+.metric-value.purple { color: var(--accent-purple); }
+
+/* Memory Gauge */
+.gauge-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gauge-bar-bg {
+  width: 100%;
+  height: 18px;
+  background: var(--bg-inner);
+  border: 1px solid var(--border-bright);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.gauge-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-green) 0%, var(--accent-amber) 70%, var(--accent-red) 100%);
+  transition: width 0.4s ease;
+}
+
+.gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.memory-breakdown {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  background: var(--bg-inner);
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-dim);
+}
+
+.mem-stat {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mem-stat .val {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Invariants Table */
+.invariants-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invariants-table th,
+.invariants-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.invariants-table th {
+  color: var(--text-dim);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.invariants-table td {
+  font-size: 12px;
+}
+
+.invariants-table tr:last-child td {
+  border-bottom: none;
+}
+
+.tag-match {
+  color: var(--accent-green);
+  font-weight: 700;
+}
+
+/* Footer */
+.footer {
+  margin-top: 36px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-dim);
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-dim);
+  font-size: 11px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
