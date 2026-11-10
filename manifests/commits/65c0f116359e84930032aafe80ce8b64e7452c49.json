@@ -1,0 +1,73 @@
+{
+  "sha": "65c0f116359e84930032aafe80ce8b64e7452c49",
+  "short_sha": "65c0f11",
+  "tree": "d39380e7d15c25c3d9a08035deaa930cb1c48538",
+  "parents": [
+    "4cda5620adc0978909f09ab89d64b0409ad46aa3"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T12:30:56+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T12:30:56+05:30"
+  },
+  "subject": "feat(phase-4): zero-JS HTMX live telemetry dashboard, CSS styling, and 512MB edge Docker profile",
+  "body": "",
+  "message": "feat(phase-4): zero-JS HTMX live telemetry dashboard, CSS styling, and 512MB edge Docker profile",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/65c0f116359e84930032aafe80ce8b64e7452c49",
+  "stats": {
+    "files_changed": 9,
+    "insertions": 872,
+    "deletions": 52
+  },
+  "files_count": 9,
+  "files": [
+    {
+      "status": "M",
+      "path": "Dockerfile"
+    },
+    {
+      "status": "M",
+      "path": "docker-compose.yml"
+    },
+    {
+      "status": "M",
+      "path": "internal/web/handlers.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/web/router.go"
+    },
+    {
+      "status": "A",
+      "path": "internal/web/web_test.go"
+    },
+    {
+      "status": "M",
+      "path": "web/static/css/style.css"
+    },
+    {
+      "status": "M",
+      "path": "web/templates/index.html"
+    },
+    {
+      "status": "M",
+      "path": "web/templates/partials/latency_metrics.html"
+    },
+    {
+      "status": "M",
+      "path": "web/templates/partials/memory_chart.html"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-10T07:01:12.458858+00:00",
+    "generator_version": "1.0.0"
+  }
+}
