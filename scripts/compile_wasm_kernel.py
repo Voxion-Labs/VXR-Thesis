@@ -153,21 +153,19 @@ def build_wasm_binary() -> bytes:
     sig_4 = bytes([0x60, 0x02, TYPE_I32, TYPE_I32, 0x01, TYPE_I64])
     # Signature 5: (i32, i32, i32) -> i64
     sig_5 = bytes([0x60, 0x03, TYPE_I32, TYPE_I32, TYPE_I32, 0x01, TYPE_I64])
-    # Signature 6: (i32, i32, i32, i32) -> i32
-    sig_6 = bytes([0x60, 0x04, TYPE_I32, TYPE_I32, TYPE_I32, 0x01, TYPE_I32])
+    # Signature 6: (i32, i32, i32, i32) -> i32 (for vxr_init)
+    sig_6 = bytes([0x60, 0x04, TYPE_I32, TYPE_I32, TYPE_I32, TYPE_I32, 0x01, TYPE_I32])
     # Signature 7: () -> i64
     sig_7 = bytes([0x60, 0x00, 0x01, TYPE_I64])
-    # Signature 8: (i32, i32, i32, i32) -> i32 (for vxr_init)
-    sig_8 = bytes([0x60, 0x04, TYPE_I32, TYPE_I32, TYPE_I32, TYPE_I32, 0x01, TYPE_I32])
 
     type_section = make_section(1, make_vector([
-        sig_0, sig_1, sig_2, sig_3, sig_4, sig_5, sig_6, sig_7, sig_8
+        sig_0, sig_1, sig_2, sig_3, sig_4, sig_5, sig_6, sig_7
     ]))
 
     # -------------------------------------------------------------------------
     # 2. Function Section: maps function index to type signature index
     # -------------------------------------------------------------------------
-    # fn 0:  vxr_init                   -> sig 8 (i32, i32, i32, i32) -> i32
+    # fn 0:  vxr_init                   -> sig 6 (i32, i32, i32, i32) -> i32
     # fn 1:  vxr_get_ring_buffer_ptr    -> sig 0 () -> i32
     # fn 2:  vxr_get_ring_buffer_capacity -> sig 0 () -> i32
     # fn 3:  vxr_alloc_arena            -> sig 2 (i32) -> i32
@@ -182,7 +180,7 @@ def build_wasm_binary() -> bytes:
     # fn 12: vxr_get_stats_zero_copy_ops-> sig 7 () -> i64
     # fn 13: vxr_get_stats_bytes_processed -> sig 7 () -> i64
     # fn 14: vxr_get_stats_last_checksum-> sig 7 () -> i64
-    fn_types = [8, 0, 0, 2, 1, 0, 3, 5, 4, 4, 7, 7, 7, 7, 7]
+    fn_types = [6, 0, 0, 2, 1, 0, 3, 5, 4, 4, 7, 7, 7, 7, 7]
     func_section = make_section(3, make_vector([encode_u32(t) for t in fn_types]))
 
     # -------------------------------------------------------------------------
@@ -317,37 +315,6 @@ def build_wasm_binary() -> bytes:
     body_6 += bytes([OP_END])
     code_bodies.append(encode_u32(len(body_6)) + body_6)
 
-    # Helper: FNV-1a checksum and in-place transform logic in Wasm
-    # Let's construct Fn 9: vxr_compute_checksum(ptr: i32, len: i32) -> i64
-    # Param 0: ptr, Param 1: len
-    # Local 2: hash (i64), Local 3: i (i32)
-    body_9 = bytearray()
-    body_9 += encode_u32(2)
-    body_9 += encode_u32(1) + bytes([TYPE_I64]) # local 2: i64
-    body_9 += encode_u32(1) + bytes([TYPE_I32]) # local 3: i32
-    # hash = FNV_OFFSET_BASIS
-    body_9 += bytes([OP_I64_CONST]) + encode_s64(FNV_OFFSET_BASIS) + bytes([OP_LOCAL_SET, 0x02])
-    # i = 0
-    body_9 += bytes([OP_I32_CONST, 0x00, OP_LOCAL_SET, 0x03])
-    # block $b0
-    body_9 += bytes([OP_BLOCK, TYPE_EMPTY])
-    # loop $l0
-    body_9 += bytes([OP_LOOP, TYPE_EMPTY])
-    # if i >= len br 1 ($b0)
-    body_9 += bytes([OP_LOCAL_GET, 0x03, OP_LOCAL_GET, 0x01, OP_I32_GE_U, OP_BR_IF, 0x01])
-    # val = i32.load8_u (ptr + i)
-    body_9 += bytes([OP_LOCAL_GET, 0x00, OP_LOCAL_GET, 0x03, OP_I32_ADD])
-    body_9 += bytes([OP_I32_LOAD8_U, 0x00, 0x00]) # align 0, offset 0
-    # hash = (hash ^ (i64.extend_i32_u val)) * FNV_PRIME
-    body_9 += bytes([OP_I64_EXTEND_I32_U, OP_LOCAL_GET, 0x02, OP_I64_XOR])
-    body_9 += bytes([OP_I64_CONST]) + encode_s64(FNV_PRIME) + bytes([OP_I64_MUL, OP_LOCAL_SET, 0x02])
-    # i = i + 1
-    body_9 += bytes([OP_LOCAL_GET, 0x03, OP_I32_CONST, 0x01, OP_I32_ADD, OP_LOCAL_SET, 0x03])
-    body_9 += bytes([OP_BR, 0x00]) # loop again
-    body_9 += bytes([OP_END, OP_END]) # end loop, end block
-    body_9 += bytes([OP_LOCAL_GET, 0x02, OP_END]) # return hash
-    code_bodies.append(encode_u32(len(body_9)) + body_9)
-
     # Fn 7: vxr_process_copy(in_ptr: i32, in_len: i32, out_ptr: i32) -> i64
     # Param 0: in_ptr, Param 1: in_len, Param 2: out_ptr
     # Local 3: hash (i64), Local 4: i (i32), Local 5: mask (i32), Local 6: val (i32)
@@ -459,6 +426,36 @@ def build_wasm_binary() -> bytes:
     # return final hash
     body_8 += bytes([OP_LOCAL_GET, 0x02, OP_END])
     code_bodies.append(encode_u32(len(body_8)) + body_8)
+
+    # Fn 9: vxr_compute_checksum(ptr: i32, len: i32) -> i64
+    # Param 0: ptr, Param 1: len
+    # Local 2: hash (i64), Local 3: i (i32)
+    body_9 = bytearray()
+    body_9 += encode_u32(2)
+    body_9 += encode_u32(1) + bytes([TYPE_I64]) # local 2: i64
+    body_9 += encode_u32(1) + bytes([TYPE_I32]) # local 3: i32
+    # hash = FNV_OFFSET_BASIS
+    body_9 += bytes([OP_I64_CONST]) + encode_s64(FNV_OFFSET_BASIS) + bytes([OP_LOCAL_SET, 0x02])
+    # i = 0
+    body_9 += bytes([OP_I32_CONST, 0x00, OP_LOCAL_SET, 0x03])
+    # block $b0
+    body_9 += bytes([OP_BLOCK, TYPE_EMPTY])
+    # loop $l0
+    body_9 += bytes([OP_LOOP, TYPE_EMPTY])
+    # if i >= len br 1 ($b0)
+    body_9 += bytes([OP_LOCAL_GET, 0x03, OP_LOCAL_GET, 0x01, OP_I32_GE_U, OP_BR_IF, 0x01])
+    # val = i32.load8_u (ptr + i)
+    body_9 += bytes([OP_LOCAL_GET, 0x00, OP_LOCAL_GET, 0x03, OP_I32_ADD])
+    body_9 += bytes([OP_I32_LOAD8_U, 0x00, 0x00]) # align 0, offset 0
+    # hash = (hash ^ (i64.extend_i32_u val)) * FNV_PRIME
+    body_9 += bytes([OP_I64_EXTEND_I32_U, OP_LOCAL_GET, 0x02, OP_I64_XOR])
+    body_9 += bytes([OP_I64_CONST]) + encode_s64(FNV_PRIME) + bytes([OP_I64_MUL, OP_LOCAL_SET, 0x02])
+    # i = i + 1
+    body_9 += bytes([OP_LOCAL_GET, 0x03, OP_I32_CONST, 0x01, OP_I32_ADD, OP_LOCAL_SET, 0x03])
+    body_9 += bytes([OP_BR, 0x00]) # loop again
+    body_9 += bytes([OP_END, OP_END]) # end loop, end block
+    body_9 += bytes([OP_LOCAL_GET, 0x02, OP_END]) # return hash
+    code_bodies.append(encode_u32(len(body_9)) + body_9)
 
     # Fn 10: vxr_get_stats_total_ops() -> i64
     body_10 = bytes([0x00, OP_GLOBAL_GET, 0x02, OP_END])
