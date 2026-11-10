@@ -1,0 +1,85 @@
+{
+  "sha": "c49f3d700f36c0ad96b2bb401e8c5fac7e8c7943",
+  "short_sha": "c49f3d7",
+  "tree": "552ad84f4155bde8a8b2aead3387e4827da07f47",
+  "parents": [
+    "7a3ee2f76b404497440d3d8bf58c5f70fe45ea7c"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T12:38:28+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T12:38:28+05:30"
+  },
+  "subject": "feat(phase-5): empirical statistical analysis, vector plot generators, and publication figures",
+  "body": "",
+  "message": "feat(phase-5): empirical statistical analysis, vector plot generators, and publication figures",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/c49f3d700f36c0ad96b2bb401e8c5fac7e8c7943",
+  "stats": {
+    "files_changed": 12,
+    "insertions": 448,
+    "deletions": 7
+  },
+  "files_count": 12,
+  "files": [
+    {
+      "status": "M",
+      "path": "Makefile"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/plots/latency_cdf.pdf"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/plots/latency_cdf.png"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/plots/memory_isolation_timeline.pdf"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/plots/memory_isolation_timeline.png"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/plots/tail_latency_concurrency.pdf"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/plots/tail_latency_concurrency.png"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/plots/throughput_scaling.pdf"
+    },
+    {
+      "status": "A",
+      "path": "benchmarks/plots/throughput_scaling.png"
+    },
+    {
+      "status": "M",
+      "path": "benchmarks/scripts/analyze_latency.py"
+    },
+    {
+      "status": "M",
+      "path": "benchmarks/scripts/plot_memory_isolation.py"
+    },
+    {
+      "status": "A",
+      "path": "scripts/run_benchmarks.py"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-10T07:08:42.457727+00:00",
+    "generator_version": "1.0.0"
+  }
+}
