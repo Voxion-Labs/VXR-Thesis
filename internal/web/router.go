@@ -15,6 +15,18 @@ func NewRouter(executor *engine.Executor, monitor *telemetry.Monitor, writer *te
 	// Dashboard page
 	mux.HandleFunc("/", handler.HandleIndex)
 
+	// Health check endpoints for cloud hosting (Render, Kubernetes, Docker)
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("OK"))
+	})
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("OK"))
+	})
+
 	// HTMX polling fragments & API endpoints
 	mux.HandleFunc("/api/metrics/latency", handler.HandleLatencyPartial)
 	mux.HandleFunc("/api/metrics/memory", handler.HandleMemoryPartial)

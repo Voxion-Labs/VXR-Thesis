@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VXR-Thesis | Voxion eXperimental Research</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="assets/Voxion_Labs_Logo.png" type="image/png">
+</head>
+<body>
+
+  <header class="header-banner">
+    <div class="logo-wrap">
+      <img src="assets/Voxion_Labs_Logo.png" alt="Voxion Labs Logo">
+    </div>
+    <h1 class="title-primary">VXR-Thesis</h1>
+    <h3 class="subtitle">Voxion eXperimental Research</h3>
+
+    <div class="badges">
+      <img src="https://img.shields.io/badge/WebAssembly-Wasm-654FF0?logo=webassembly&logoColor=white" alt="WebAssembly" />
+      <img src="https://img.shields.io/badge/C%2B%2B-20-00599C?logo=c%2B%2B&logoColor=white" alt="C++20" />
+      <img src="https://img.shields.io/badge/Go-1.21-00ADD8?logo=go&logoColor=white" alt="Go" />
+      <img src="https://img.shields.io/badge/Wazero-Zero--CGO-00b4d8" alt="Wazero" />
+      <img src="https://img.shields.io/badge/HTMX-Zero--JS-3366cc" alt="HTMX" />
+      <img src="https://img.shields.io/badge/Memory-512MB--Edge-ea580c" alt="512MB RAM" />
+      <img src="https://img.shields.io/badge/Project-Applied%20Research-00d4ff" alt="Applied Research" />
+      <img src="https://img.shields.io/badge/License-Proprietary-red.svg" alt="License" />
+    </div>
+
+    <p class="thesis-statement">
+      <strong>Evaluating Zero-Copy Execution and Custom Memory Allocation for Ultra-Low Latency WebAssembly Workloads in Constrained Edge Environments.</strong><br/>
+      A high-integrity, edge-native systems research framework demonstrating deterministic &Omicron;(1) slab allocation, monotonic arena bounding, and direct linear memory ring buffering to eliminate boundary serialization penalties on 512MB RAM edge instances.
+    </p>
+
+    <div class="action-links">
+      <a href="https://vxr-thesis.onrender.com" target="_blank" class="btn btn-primary">Live Interactive Dashboard (Render)</a>
+      <a href="https://github.com/Voxion-Labs/VXR-Thesis" target="_blank" class="btn btn-secondary">Source Code Repository</a>
+      <a href="https://github.com/Voxion-Labs/VXR-Thesis/blob/main/thesis/main.tex" target="_blank" class="btn btn-secondary">LaTeX Thesis Source</a>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Executive Overview -->
+    <section class="section-block">
+      <h2 class="section-title">Executive Overview</h2>
+      <p style="margin-bottom: 1rem;">
+        Modern edge computing environments—such as free-tier edge microservices (e.g., Render 512MB instances), serverless micro-VMs, and constrained edge appliances—impose severe constraints on system memory and compute overhead. While WebAssembly (Wasm) provides secure, sandboxed isolation, traditional execution runtimes suffer from high guest-host boundary serialization penalties. Every standard invocation incurs host-to-guest data copies, runtime allocations via general-purpose heap allocators (e.g., dlmalloc), and non-deterministic garbage collection churn on the orchestrating host.
+      </p>
+      <p>
+        <strong>VXR-Thesis</strong> addresses this fundamental systems bottleneck by proving that direct linear memory slicing coupled with custom <code>&Omicron;(1)</code> slab and monotonic arena allocators eliminates intermediate serialization overhead. The orchestrating host runtime (pure-Go Wazero, zero-CGO) writes directly into a designated 256KB ring buffer inside the Wasm instance's linear memory, enabling deterministic, in-place kernel execution with zero garbage collection spikes.
+      </p>
+    </section>
+
+    <!-- Architecture & Data Flow -->
+    <section class="section-block">
+      <h2 class="section-title">Core Architecture & Data Flow</h2>
+      <div class="code-box">
+  +-------------------------------------------------------------------------+
+  |              Host Edge Orchestrator (Go 1.21 + Wazero Runtime)          |
+  |  Memory Ceiling: 512MB RAM (Strict Edge Profile)                        |
+  +-------------------------------------------------------------------------+
+       |                                                    |
+  [BASELINE COPY PATH]                             [ZERO-COPY IN-PLACE PATH]
+       |                                                    |
+       v                                                    v
+  1. Allocate Host Buffer (Go Heap)                1. Direct Linear Memory Slice
+  2. Memory().Write(guest_ptr, buf)                   Memory().Write(ring_buf_ptr, buf)
+  3. Call vxr_alloc_slab(guest, len)               2. Circular Masking (head & cap-1)
+  4. Guest malloc() + memcpy()                     3. In-Place Kernel Transformation
+  5. Process & copy back result                    4. Zero Guest Allocations (0-Copy)
+       |                                                    |
+       v                                                    v
+  [High Tail Latency (p99 ~ 2.82x Spike)]          [Deterministic &Omicron;(1) Sub-Microsecond Execution]
+  [Go GC Heap Churn: 24.3 MB]                      [Go GC Heap Churn: 0.00 MB]
+      </div>
+    </section>
+
+    <!-- Empirical Telemetry -->
+    <section class="section-block">
+      <h2 class="section-title">Empirical Telemetry & Performance</h2>
+      <p style="margin-bottom: 1.5rem;">
+        Comprehensive benchmark sweeps across payload dimensions (64B to 64KB) and concurrency levels (1 to 8 workers) validate the theoretical speedup of zero-copy execution over standard serialization.
+      </p>
+
+      <div class="grid-2">
+        <div class="figure-card">
+          <img src="assets/latency_cdf.png" alt="Cumulative Distribution of Latency">
+          <div class="figure-caption">Fig 1. Cumulative Distribution Function (CDF) of Latency across 40,000 Operations.</div>
+        </div>
+        <div class="figure-card">
+          <img src="assets/tail_latency_concurrency.png" alt="Tail Latency Scaling">
+          <div class="figure-caption">Fig 2. Tail Latency (p90, p95, p99) under Concurrent Multi-Core Load.</div>
+        </div>
+        <div class="figure-card">
+          <img src="assets/throughput_scaling.png" alt="Throughput Scaling">
+          <div class="figure-caption">Fig 3. Throughput Scaling (MB/s) as a Function of Payload Size.</div>
+        </div>
+        <div class="figure-card">
+          <img src="assets/memory_isolation_timeline.png" alt="Memory Isolation Profile">
+          <div class="figure-caption">Fig 4. Memory Footprint and 512MB RAM Isolation Profile over Time.</div>
+        </div>
+      </div>
+
+      <table class="metric-table">
+        <thead>
+          <tr>
+            <th>Performance Metric</th>
+            <th>Baseline (Host-Guest Copy)</th>
+            <th>Proposed (Zero-Copy)</th>
+            <th>Net Advantage / Speedup</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mean Latency (64KB Payload)</strong></td>
+            <td>182.40 &mu;s</td>
+            <td>81.20 &mu;s</td>
+            <td class="speedup-badge">2.25x Faster</td>
+          </tr>
+          <tr>
+            <td><strong>p99 Tail Latency (Concurrency=8)</strong></td>
+            <td>412.80 &mu;s</td>
+            <td>146.50 &mu;s</td>
+            <td class="speedup-badge">2.82x Tail Reduction</td>
+          </tr>
+          <tr>
+            <td><strong>Peak Throughput</strong></td>
+            <td>284.10 MB/s</td>
+            <td>788.50 MB/s</td>
+            <td class="speedup-badge">2.77x Throughput</td>
+          </tr>
+          <tr>
+            <td><strong>Go Heap Allocation Churn</strong></td>
+            <td>24.30 MB</td>
+            <td>0.00 MB</td>
+            <td class="speedup-badge">Zero GC Pressure</td>
+          </tr>
+          <tr>
+            <td><strong>Edge Memory Footprint</strong></td>
+            <td>18.40 MB / 512MB</td>
+            <td>2.14 MB / 512MB</td>
+            <td class="speedup-badge">99.6% Safe Headroom</td>
+          </tr>
+          <tr>
+            <td><strong>Mathematical Checksum</strong></td>
+            <td>0x9CF003B7F806C325</td>
+            <td>0x9CF003B7F806C325</td>
+            <td class="speedup-badge">100% Exact Verification</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Linear Memory Layout Specification -->
+    <section class="section-block">
+      <h2 class="section-title">WebAssembly Linear Memory Layout</h2>
+      <p style="margin-bottom: 1rem;">
+        The WebAssembly kernel allocates a fixed 32 pages (2,097,152 bytes = 2MB) of linear memory, strictly segmented into deterministic sub-pools:
+      </p>
+
+      <table class="metric-table">
+        <thead>
+          <tr>
+            <th>Memory Offset Range</th>
+            <th>Partition Dimension</th>
+            <th>Sub-System Component</th>
+            <th>Operational Invariant & Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>0x00000 - 0x0FFFF</code></td>
+            <td>64 KB (1 page)</td>
+            <td>Wasm Call Stack & Globals</td>
+            <td>Thread frame execution and static ABI globals</td>
+          </tr>
+          <tr>
+            <td><code>0x10000 - 0x4FFFF</code></td>
+            <td>256 KB (4 pages)</td>
+            <td>Zero-Copy Ring Buffer</td>
+            <td>Direct host writes via circular power-of-two bitwise masking</td>
+          </tr>
+          <tr>
+            <td><code>0x50000 - 0xCFFFF</code></td>
+            <td>512 KB (8 pages)</td>
+            <td>Monotonic Bump Arena</td>
+            <td>Instantaneous bulk batch allocations with &Omicron;(1) reset</td>
+          </tr>
+          <tr>
+            <td><code>0xD0000 - 0x10FFFF</code></td>
+            <td>256 KB (4 pages)</td>
+            <td>Fixed-Chunk Slab Pool</td>
+            <td>1,024 intrusive 256-byte blocks with &Omicron;(1) LIFO free list</td>
+          </tr>
+          <tr>
+            <td><code>0x110000 - 0x1FFFFF</code></td>
+            <td>960 KB (15 pages)</td>
+            <td>Guard Page & System Reserve</td>
+            <td>Hardware-trapped overflow containment boundary</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Author & Lab Attribution -->
+    <section class="section-block">
+      <h2 class="section-title">Architecture & Infrastructure</h2>
+      <div class="author-card">
+        <img src="assets/rudranarayan_jena.png" alt="Rudranarayan Jena" class="author-img">
+        <div>
+          <h3 style="color: #fff; font-size: 1.25rem;">Rudranarayan Jena</h3>
+          <p style="color: var(--accent-cyan); font-size: 0.95rem; margin-bottom: 0.5rem;">
+            <em>Founder, <a href="https://github.com/Voxion-Labs" target="_blank" style="color: var(--accent-cyan);">Voxion Labs</a></em> · 
+            <em>Academic Profile: <a href="https://github.com/liambrooks-lab" target="_blank" style="color: var(--accent-cyan);">@liambrooks-lab</a></em>
+          </p>
+          <p style="color: #cbd5e1; font-size: 0.9rem;">
+            Systems researcher specializing in low-level WebAssembly runtimes, high-performance memory allocators, and deterministic edge computing architectures. Directing the <strong>VXR-Thesis</strong> research initiative to establish empirical standards for zero-copy execution on memory-constrained edge infrastructures.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BibTeX Citation -->
+    <section class="section-block">
+      <h2 class="section-title">Academic Citation & Bibliography</h2>
+      <div class="code-box">@article{jena2026vxrthesis,
+  author      = {Jena, Rudranarayan},
+  title       = {Evaluating Zero-Copy Execution and Custom Memory Allocation for Ultra-Low Latency WebAssembly Workloads in Constrained Edge Environments},
+  journal     = {Voxion Labs Applied Systems Research},
+  year        = {2026},
+  volume      = {4},
+  number      = {1},
+  pages       = {1--12},
+  institution = {Voxion Labs Systems Research Group},
+  url         = {https://voxion-labs.github.io/VXR-Thesis/}
+}</div>
+    </section>
+
+    <!-- License Directives -->
+    <section class="section-block">
+      <h2 class="section-title">License Directives</h2>
+      <p style="color: #94a3b8; font-size: 0.9rem;">
+        This repository and its underlying WebAssembly/C++ kernel are proprietary intellectual property.<br/>
+        VXR-Thesis operates under the <strong>Voxion Labs Proprietary Research License (VL-PRL)</strong>.<br/>
+        Open-source usage, commercial exploitation, or unauthorized redistribution is strictly prohibited.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>
+      <strong>Voxion Labs</strong> &middot; Applied Research &middot; Zero-Copy WebAssembly &middot; C++20 &middot; Go 1.21 &middot; HTMX
+    </p>
+  </footer>
+
+</body>
+</html>

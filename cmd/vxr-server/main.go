@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -17,14 +18,26 @@ import (
 )
 
 func main() {
+	defaultPort := 8080
+	if envPort := os.Getenv("PORT"); envPort != "" {
+		if p, err := strconv.Atoi(envPort); err == nil && p > 0 {
+			defaultPort = p
+		}
+	}
+
+	defaultServe := false
+	if os.Getenv("RENDER") != "" || os.Getenv("PORT") != "" {
+		defaultServe = true
+	}
+
 	wasmPath := flag.String("wasm", "web/static/wasm/vxr_kernel.wasm", "Path to compiled WebAssembly kernel")
 	mode := flag.String("mode", "both", "Benchmark mode: zero_copy, baseline, or both")
 	concurrency := flag.Int("concurrency", 8, "Number of concurrent worker goroutines")
 	iterations := flag.Int("iterations", 5000, "Total benchmark iterations per mode")
 	payloadSize := flag.Int("payload", 4096, "Payload size in bytes (default: 4096 = 4KB)")
 	csvPath := flag.String("csv", "benchmarks/data/telemetry.csv", "Path to telemetry CSV log output")
-	serve := flag.Bool("serve", false, "Start HTMX live telemetry HTTP web server")
-	port := flag.Int("port", 8080, "HTTP server listening port")
+	serve := flag.Bool("serve", defaultServe, "Start HTMX live telemetry HTTP web server (auto-enabled if $PORT or $RENDER is set)")
+	port := flag.Int("port", defaultPort, "HTTP server listening port (defaults to $PORT if set)")
 	flag.Parse()
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)

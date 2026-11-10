@@ -97,4 +97,19 @@ func TestWebEndpoints(t *testing.T) {
 	if !strings.Contains(recTrigger.Body.String(), "Workload Finished") {
 		t.Errorf("expected output to contain 'Workload Finished', got: %s", recTrigger.Body.String())
 	}
+
+	// 5. Test Cloud Health Endpoints (/health and /healthz)
+	reqHealth := httptest.NewRequest(http.MethodGet, "/health", nil)
+	recHealth := httptest.NewRecorder()
+	router.ServeHTTP(recHealth, reqHealth)
+	if recHealth.Code != http.StatusOK || recHealth.Body.String() != "OK" {
+		t.Errorf("expected 200 OK from /health, got code %d body %s", recHealth.Code, recHealth.Body.String())
+	}
+
+	reqHealthz := httptest.NewRequest(http.MethodGet, "/healthz", nil)
+	recHealthz := httptest.NewRecorder()
+	router.ServeHTTP(recHealthz, reqHealthz)
+	if recHealthz.Code != http.StatusOK || recHealthz.Body.String() != "OK" {
+		t.Errorf("expected 200 OK from /healthz, got code %d body %s", recHealthz.Code, recHealthz.Body.String())
+	}
 }

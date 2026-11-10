@@ -1,6 +1,6 @@
 # ==============================================================================
 # VXR-Thesis: Production Multi-Stage Dockerfile
-# Optimized for 512MB Edge Execution Profile
+# Optimized for 512MB Edge Execution Profile (Render Free Tier, Edge Instances)
 # ==============================================================================
 
 # Stage 1: Build the static Go binary
@@ -25,7 +25,7 @@ FROM alpine:3.19
 
 WORKDIR /app
 
-RUN apk add --no-cache ca-certificates tzdata \
+RUN apk add --no-cache ca-certificates tzdata wget \
     && addgroup -S vxr && adduser -S vxr -G vxr
 
 # Copy compiled binary from builder
@@ -39,10 +39,12 @@ RUN mkdir -p /app/benchmarks/data && chown -R vxr:vxr /app
 
 USER vxr
 
+ENV PORT=8080
+ENV RENDER=true
 EXPOSE 8080
 
 HEALTHCHECK --interval=15s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget -qO- http://localhost:8080/api/metrics/json || exit 1
+    CMD wget -qO- http://localhost:${PORT}/health || exit 1
 
 ENTRYPOINT ["/app/vxr-server"]
-CMD ["-serve", "-port", "8080", "-wasm", "web/static/wasm/vxr_kernel.wasm", "-csv", "benchmarks/data/telemetry.csv"]
+CMD ["-serve"]
