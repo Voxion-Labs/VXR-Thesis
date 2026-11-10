@@ -104,6 +104,10 @@ func (h *Handler) HandleTriggerBenchmark(w http.ResponseWriter, r *http.Request)
 
 	ctx := context.Background()
 
+	if h.monitor != nil {
+		h.monitor.Reset()
+	}
+
 	var baseSummary *engine.BenchmarkSummary
 	var zeroSummary *engine.BenchmarkSummary
 
@@ -127,6 +131,14 @@ func (h *Handler) HandleTriggerBenchmark(w http.ResponseWriter, r *http.Request)
 			WarmupRuns:  20,
 		}
 		zeroSummary, _ = h.executor.RunBenchmarkSuite(ctx, cfg, h.monitor, h.writer)
+	}
+
+	if h.monitor != nil {
+		if zeroSummary != nil {
+			h.monitor.SetBenchmarkSummary(zeroSummary.ThroughputMBps, zeroSummary.OpsPerSec)
+		} else if baseSummary != nil {
+			h.monitor.SetBenchmarkSummary(baseSummary.ThroughputMBps, baseSummary.OpsPerSec)
+		}
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")

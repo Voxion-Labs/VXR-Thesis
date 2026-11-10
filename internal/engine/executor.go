@@ -119,15 +119,11 @@ func (e *Executor) ExecuteCopy(ctx context.Context, payload []byte) (ExecutionRe
 
 	durationUs := float64(time.Since(start).Nanoseconds()) / 1000.0
 
-	var mem runtime.MemStats
-	runtime.ReadMemStats(&mem)
-
 	return ExecutionResult{
 		Mode:           "baseline_copy",
 		DurationUs:     durationUs,
 		BytesProcessed: n,
 		Checksum:       checksum,
-		HeapAllocBytes: mem.Alloc,
 	}, nil
 }
 
@@ -165,15 +161,11 @@ func (e *Executor) ExecuteZeroCopy(ctx context.Context, offset uint32, payload [
 
 	durationUs := float64(time.Since(start).Nanoseconds()) / 1000.0
 
-	var mem runtime.MemStats
-	runtime.ReadMemStats(&mem)
-
 	return ExecutionResult{
 		Mode:           "zero_copy",
 		DurationUs:     durationUs,
 		BytesProcessed: n,
 		Checksum:       checksum,
-		HeapAllocBytes: mem.Alloc,
 	}, nil
 }
 
@@ -209,12 +201,10 @@ func (e *Executor) RunBenchmarkSuite(
 		}
 	}
 
-	if mon != nil {
-		mon.Reset()
-	}
-
 	var completedOps uint64
 	var wg sync.WaitGroup
+	var memSnapshot runtime.MemStats
+	runtime.ReadMemStats(&memSnapshot)
 	startSuite := time.Now()
 
 	opsPerWorker := cfg.Iterations / cfg.Concurrency
@@ -257,8 +247,6 @@ func (e *Executor) RunBenchmarkSuite(
 				}
 
 				if writer != nil {
-					var mem runtime.MemStats
-					runtime.ReadMemStats(&mem)
 					writer.Log(telemetry.LogRecord{
 						Timestamp:      time.Now(),
 						Mode:           res.Mode,
@@ -266,9 +254,9 @@ func (e *Executor) RunBenchmarkSuite(
 						Concurrency:    cfg.Concurrency,
 						LatencyUs:      res.DurationUs,
 						Checksum:       res.Checksum,
-						HeapAllocBytes: mem.Alloc,
-						SysMemBytes:    mem.Sys,
-						NumGC:          mem.NumGC,
+						HeapAllocBytes: memSnapshot.Alloc,
+						SysMemBytes:    memSnapshot.Sys,
+						NumGC:          memSnapshot.NumGC,
 					})
 				}
 			}

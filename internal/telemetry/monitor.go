@@ -45,9 +45,15 @@ type Monitor struct {
 	lastChecksum   uint64
 
 	// Fixed rolling reservoir of latencies in microseconds (up to 20,000 samples)
-	maxSamples  int
-	latenciesUs []float64
-	sampleIndex int
+	maxSamples          int
+	latenciesUs         []float64
+	sampleIndex         int
+	baselineLatenciesUs []float64
+	zeroCopyLatenciesUs []float64
+
+	// Active burst metrics from latest benchmark execution
+	latestThroughputMBps float64
+	latestOpsPerSec      float64
 }
 
 // NewMonitor initializes a thread-safe systems monitor.
@@ -56,10 +62,20 @@ func NewMonitor(reservoirSize int) *Monitor {
 		reservoirSize = 20000
 	}
 	return &Monitor{
-		startTime:   time.Now(),
-		maxSamples:  reservoirSize,
-		latenciesUs: make([]float64, 0, reservoirSize),
+		startTime:           time.Now(),
+		maxSamples:          reservoirSize,
+		latenciesUs:         make([]float64, 0, reservoirSize),
+		baselineLatenciesUs: make([]float64, 0, reservoirSize/2),
+		zeroCopyLatenciesUs: make([]float64, 0, reservoirSize/2),
 	}
+}
+
+// SetBenchmarkSummary updates the monitor with empirical results from the latest benchmark run.
+func (m *Monitor) SetBenchmarkSummary(throughputMBps, opsPerSec float64) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.latestThroughputMBps = throughputMBps
+	m.latestOpsPerSec = opsPerSec
 }
 
 // RecordObservation logs an execution event into the monitor.
@@ -70,8 +86,14 @@ func (m *Monitor) RecordObservation(mode string, durationUs float64, bytesCount 
 	m.totalOps++
 	if mode == "baseline_copy" || mode == "baseline" {
 		m.baselineOps++
+		if len(m.baselineLatenciesUs) < m.maxSamples/2 {
+			m.baselineLatenciesUs = append(m.baselineLatenciesUs, durationUs)
+		}
 	} else {
 		m.zeroCopyOps++
+		if len(m.zeroCopyLatenciesUs) < m.maxSamples/2 {
+			m.zeroCopyLatenciesUs = append(m.zeroCopyLatenciesUs, durationUs)
+		}
 	}
 	m.bytesProcessed += uint64(bytesCount)
 	m.lastChecksum = checksum
@@ -108,20 +130,30 @@ func (m *Monitor) Snapshot() MetricsSnapshot {
 		MemoryPressurePct: (float64(mem.Sys) / (512 * 1024 * 1024)) * 100.0,
 	}
 
-	elapsed := time.Since(m.startTime).Seconds()
-	if elapsed > 0 {
-		snap.OpsPerSec = float64(m.totalOps) / elapsed
-		snap.ThroughputMBps = (float64(m.bytesProcessed) / (1024 * 1024)) / elapsed
+	if m.latestOpsPerSec > 0 {
+		snap.OpsPerSec = m.latestOpsPerSec
+		snap.ThroughputMBps = m.latestThroughputMBps
+	} else {
+		elapsed := time.Since(m.startTime).Seconds()
+		if elapsed > 0 {
+			snap.OpsPerSec = float64(m.totalOps) / elapsed
+			snap.ThroughputMBps = (float64(m.bytesProcessed) / (1024 * 1024)) / elapsed
+		}
 	}
 
-	n := len(m.latenciesUs)
+	// Prefer zero-copy distribution for top metrics if present, else general pool
+	targetLatencies := m.zeroCopyLatenciesUs
+	if len(targetLatencies) == 0 {
+		targetLatencies = m.latenciesUs
+	}
+
+	n := len(targetLatencies)
 	if n == 0 {
 		return snap
 	}
 
-	// Copy and sort for percentile calculation
 	sorted := make([]float64, n)
-	copy(sorted, m.latenciesUs)
+	copy(sorted, targetLatencies)
 	sort.Float64s(sorted)
 
 	snap.MinLatencyUs = sorted[0]
@@ -152,6 +184,10 @@ func (m *Monitor) Reset() {
 	m.bytesProcessed = 0
 	m.lastChecksum = 0
 	m.latenciesUs = m.latenciesUs[:0]
+	m.baselineLatenciesUs = m.baselineLatenciesUs[:0]
+	m.zeroCopyLatenciesUs = m.zeroCopyLatenciesUs[:0]
+	m.latestThroughputMBps = 0
+	m.latestOpsPerSec = 0
 	m.sampleIndex = 0
 }
 
