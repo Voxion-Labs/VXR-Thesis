@@ -2,10 +2,21 @@
   "schema_version": "1.0.0",
   "repository": "Voxion-Labs/VXR-Thesis",
   "branch": "main",
-  "last_updated": "2026-11-10T07:32:56.610799+00:00",
-  "total_commits": 10,
-  "latest_sha": "f76e67f8e6740a054e3fc4ab9a83d6f01903be7d",
+  "last_updated": "2026-11-10T08:16:49.398521+00:00",
+  "total_commits": 11,
+  "latest_sha": "dfe01cdf8527fd3bce4866baa3b5c9ac2ccd8245",
   "commits": [
+    {
+      "sha": "dfe01cdf8527fd3bce4866baa3b5c9ac2ccd8245",
+      "short_sha": "dfe01cd",
+      "date": "2026-11-10T13:46:31+05:30",
+      "author": "liambrooks-lab",
+      "subject": "fix(telemetry): remove per-iteration ReadMemStats GC pause and preserve dual benchmark counts",
+      "files_changed": 4,
+      "insertions": 68,
+      "deletions": 32,
+      "manifest_file": "manifests/commits/dfe01cdf8527fd3bce4866baa3b5c9ac2ccd8245.json"
+    },
     {
       "sha": "f76e67f8e6740a054e3fc4ab9a83d6f01903be7d",
       "short_sha": "f76e67f",

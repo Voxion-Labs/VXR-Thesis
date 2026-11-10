@@ -1,0 +1,53 @@
+{
+  "sha": "dfe01cdf8527fd3bce4866baa3b5c9ac2ccd8245",
+  "short_sha": "dfe01cd",
+  "tree": "933dd9b548f9948f952ffc09b90343ba4855779a",
+  "parents": [
+    "dae4c4f26d73ad79165d060c601dce5cccd6ca98"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T13:46:31+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T13:46:31+05:30"
+  },
+  "subject": "fix(telemetry): remove per-iteration ReadMemStats GC pause and preserve dual benchmark counts",
+  "body": "",
+  "message": "fix(telemetry): remove per-iteration ReadMemStats GC pause and preserve dual benchmark counts",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/dfe01cdf8527fd3bce4866baa3b5c9ac2ccd8245",
+  "stats": {
+    "files_changed": 4,
+    "insertions": 68,
+    "deletions": 32
+  },
+  "files_count": 4,
+  "files": [
+    {
+      "status": "M",
+      "path": "docs/index.html"
+    },
+    {
+      "status": "M",
+      "path": "internal/engine/executor.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/telemetry/monitor.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/web/handlers.go"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-10T08:16:49.398291+00:00",
+    "generator_version": "1.0.0"
+  }
+}
