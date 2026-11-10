@@ -1,1 +1,32 @@
-% Introduction
+\section{Introduction}
+\label{sec:introduction}
+
+The deployment of distributed serverless microservices at the telecommunications edge demands strict spatial isolation, ultra-fast cold starts, and deterministic throughput \cite{hall2021edge, shillaker2020faasm}. WebAssembly (Wasm) \cite{haas2017bringing} has become the dominant technology for executing untrusted guest workloads safely across diverse architectures without the virtualization overhead of traditional container runtimes.
+
+Despite its benefits, the memory isolation model of WebAssembly presents a critical systems bottleneck. A Wasm module executes within a 32-bit linear memory space isolated from the host process \cite{bono2020sandboxing}. In traditional guest-host communication topologies:
+\begin{enumerate}
+    \item The host prepares input buffers in its native memory space.
+    \item The host invokes a guest allocation export (e.g., standard \texttt{malloc} or \texttt{dlmalloc}), which allocates a dynamic chunk in guest memory.
+    \item The host copies payload bytes into the guest linear memory buffer via explicit byte copies ($\text{memcpy}$).
+    \item The guest executes the requested compute kernel.
+    \item The result is written to a second guest buffer, copied back across the memory boundary into host space, and deallocated via \texttt{free()}.
+\end{enumerate}
+
+\subsection{The Boundary Serialization Penalty}
+This standard execution paradigm incurs a \textit{double-buffering penalty}:
+\begin{equation}
+T_{serialization} = 2 \times \frac{S}{B_{mem}} + 2 \times T_{alloc}(S)
+\end{equation}
+where $S$ is the payload buffer size in bytes and $B_{mem}$ represents the memory bus bandwidth. For streaming telemetry, network packet inspection, or sensor aggregation pipelines operating on high-frequency payloads (e.g., 64B to 64KB), the time spent traversing the boundary and navigating dynamic allocator metadata eclipses the actual compute execution time.
+
+\subsection{Resource Constraints at the Edge}
+This problem is amplified on edge instances with constrained memory limits (such as a 512MB RAM ceiling on cloud micro-tiers or IoT gateways). Standard dynamic allocators suffer from external memory fragmentation over prolonged execution periods, while dynamic buffer allocations in garbage-collected host environments (such as Go) generate continuous heap churn. Under multi-threaded concurrent loads, periodic Garbage Collection (GC) pauses induce catastrophic tail latency amplification at the $p95$ and $p99$ percentiles.
+
+\subsection{Contributions}
+In this paper, we design, implement, and empirically validate an applied low-level systems architecture that eliminates boundary double-buffering:
+\begin{itemize}
+    \item \textbf{Custom $\mathcal{O}(1)$ Memory Allocators:} We engineer a contiguous Slab Allocator with an intrusive free-list for fixed 256-byte telemetry chunks, and an aligned Monotonic Arena Allocator for batch processing, providing deterministic $\mathcal{O}(1)$ allocation and deallocation.
+    \item \textbf{Direct Linear Memory Ring Buffer:} We map a circular ring buffer directly into guest linear memory at offset \texttt{0x10000}, enabling the host orchestrator to slice and write directly into guest memory with zero intermediate allocations.
+    \item \textbf{Empirical Testing Framework:} We build a complete testing harness utilizing a native WebAssembly runtime (\texttt{wazero}) in Go, recording tens of thousands of microsecond-precision data points to CSV.
+    \item \textbf{Statistical Validation:} We analyze latency distributions ($p50, p90, p95, p99$), throughput scaling, and memory RSS stability, demonstrating that zero-copy execution preserves determinism within the 512MB RAM ceiling.
+\end{itemize}

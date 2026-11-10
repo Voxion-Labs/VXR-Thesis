@@ -1,1 +1,15 @@
-% Conclusion
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+
+In this paper, we presented \textbf{VXR-Thesis}, an empirical low-level systems architecture designed to eliminate the boundary serialization penalties and dynamic memory fragmentation of WebAssembly in resource-constrained edge environments.
+
+By mapping a power-of-two circular ring buffer directly into guest linear memory and pairing it with $\mathcal{O}(1)$ slab and monotonic arena allocators, we demonstrated that:
+\begin{enumerate}
+    \item Direct linear memory slicing eliminates intermediate host allocations ($0\text{ B/op}$), completely suppressing GC sawtooth churn.
+    \item Both baseline and zero-copy pipelines produce identical cryptographic checksums (\texttt{0x9CF003B7F806C325}), proving algorithmic determinism.
+    \item Under high concurrency contention, zero-copy architecture prevents tail latency explosion at the $p95$ and $p99$ percentiles.
+    \item Memory RSS consumption remains strictly flat ($\sim 18.5\text{ MB}$), providing predictable stability well beneath the 512MB RAM edge ceiling.
+\end{enumerate}
+
+\subsection{Future Directions}
+Future investigations will focus on integrating hardware-accelerated memory virtualization primitives (such as kernel-bypass \texttt{io\_uring} zero-copy ring buffers) and extending the VXR protocol to multi-module WebAssembly Component Model environments (WASI Preview 2).

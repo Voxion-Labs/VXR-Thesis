@@ -1,1 +1,65 @@
-% Architecture
+\section{Architecture and Systems Design}
+\label{sec:architecture}
+
+The VXR systems architecture intentionally avoids bloated runtime environments, implementing a clean division between the low-level C++ kernel, the Go concurrency orchestrator, and the linear memory communication contract.
+
+\subsection{Guest Linear Memory Layout}
+WebAssembly provides a contiguous, byte-addressable linear array of memory structured into 64KB pages \cite{haas2017bringing}. The VXR kernel partitions its 32 initial pages (2MB total capacity) into four statically defined regions:
+
+\begin{table}[h]
+\centering
+\caption{Linear Memory Layout & Partition Offsets}
+\label{tab:memory_layout}
+\small
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Partition} & \textbf{Start Offset} & \textbf{Capacity} & \textbf{Complexity} \\ \hline
+Stack / Scratch    & \texttt{0x00000}      & 64 KB             & $\mathcal{O}(1)$ \\ \hline
+Zero-Copy Ring     & \texttt{0x10000}      & 256 KB            & $\mathcal{O}(1)$ \\ \hline
+Monotonic Arena    & \texttt{0x50000}      & 512 KB            & $\mathcal{O}(1)$ \\ \hline
+Fixed Slab Pool    & \texttt{0xD0000}      & 256 KB            & $\mathcal{O}(1)$ \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Custom Zero-Overhead Allocators}
+Standard allocators maintain complex binning headers and boundary tags, resulting in internal and external fragmentation under high-frequency allocations \cite{bonwick1994slab}.
+
+\subsubsection{Monotonic Arena Allocator}
+For batched telemetry workloads, the Arena Allocator enforces 8-byte aligned monotonic bump allocation:
+\begin{equation}
+\text{offset}_{aligned} = (\text{offset} + (\text{alignment} - 1)) \land \sim(\text{alignment} - 1)
+\end{equation}
+Allocation is guaranteed $\mathcal{O}(1)$. All active chunks are reclaimed instantaneously in $\mathcal{O}(1)$ time by executing \texttt{vxr\_reset\_arena()}, which resets the offset counter to the arena base pointer:
+\begin{equation}
+\text{reset}() \implies \text{offset} \leftarrow 0
+\end{equation}
+
+\subsubsection{Fixed-Chunk Slab Allocator}
+For fixed-size telemetry packets (256 bytes), the Slab Allocator uses an intrusive singly-linked free-list stored directly within unused chunks:
+\begin{verbatim}
+struct FreeNode { FreeNode* next; };
+\end{verbatim}
+Allocation pops the head node from the free list in $\mathcal{O}(1)$ time, while deallocation pushes the released chunk onto the head node in $\mathcal{O}(1)$ time. External fragmentation is mathematically zero.
+
+\subsection{Zero-Copy Stream Buffer Protocol}
+The circular ring buffer resides at linear offset \texttt{0x10000} (Page 1). With capacity $C = 2^{18}$ (256 KB), head and tail indexing employs branchless bitwise masking:
+\begin{equation}
+\text{idx}_{head} = \text{head} \land (C - 1)
+\end{equation}
+The host runtime queries the linear base address once via \texttt{vxr\_get\_ring\_buffer\_ptr()}. To inject data, the host writes directly to guest linear memory at:
+\begin{equation}
+\text{Addr}_{write} = \text{Base}_{ring} + \text{idx}_{head}
+\end{equation}
+This operation entirely bypasses guest dynamic memory allocation and eliminates boundary copies \cite{chu1996zero}.
+
+\subsection{Dual-Path Workload Kernel}
+To ensure rigorous experimental comparison, the C++ compute kernel implements identical mathematical operations across both pathways:
+\begin{itemize}
+    \item \textbf{FNV-1a 64-bit Checksum:}
+    \begin{equation}
+    H_{i} = (H_{i-1} \oplus \text{byte}_i) \times \text{0x100000001b3}
+    \end{equation}
+    with offset basis \texttt{14695981039346656037}.
+    \item \textbf{In-Place Stream Transformation:} An unrolled XOR-folding bit permutation parameterized by the initial checksum hash.
+\end{itemize}
+Both the Baseline path (\texttt{vxr\_process\_copy}) and the Zero-Copy path (\texttt{vxr\_process\_zero_copy}) perform this exact computational workload, guaranteeing that observed latency differentials stem purely from memory management and boundary traversal mechanics.

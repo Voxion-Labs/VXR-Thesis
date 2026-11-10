@@ -15,7 +15,7 @@ else
   COMMIT_MSG := $(MSG)
 endif
 
-.PHONY: help push rebase sync manifest manifest-backfill build-wasm verify-wasm run-server benchmark analyze test test-cpp status
+.PHONY: help push rebase sync manifest manifest-backfill build-wasm verify-wasm verify-thesis run-server benchmark analyze test test-cpp status
 
 # Default target
 all: help
@@ -104,8 +104,13 @@ test-cpp:
 	@echo [VXR] Compiling and running native C++ systems verification suite...
 	@g++ -std=c++17 -O3 -Icore-cpp/include core-cpp/src/*.cpp core-cpp/tests/test_kernel.cpp -o test_kernel_run.exe && test_kernel_run.exe && python -c "import os; os.remove('test_kernel_run.exe') if os.path.exists('test_kernel_run.exe') else None"
 
-## test: Vet Go codebase, execute C++ tests, verify Wasm ABI, and verify Python scripts
-test: test-cpp verify-wasm
+## verify-thesis: Validate LaTeX thesis structure, citations, and figure paths
+verify-thesis:
+	@echo [VXR] Validating LaTeX academic thesis and citations...
+	python scripts/verify_thesis.py
+
+## test: Vet Go codebase, execute C++ tests, verify Wasm ABI, test thesis, and verify Python scripts
+test: test-cpp verify-wasm verify-thesis
 	@echo [VXR] Vetting Go code...
 	go vet ./...
 	@echo [VXR] Testing Go packages...
@@ -132,6 +137,7 @@ help:
 	@echo Development Targets:
 	@echo   build-wasm         Build C++ kernel into WebAssembly
 	@echo   verify-wasm        Validate WebAssembly binary ABI compliance
+	@echo   verify-thesis      Validate LaTeX thesis structure, citations, and figures
 	@echo   run-server         Run Go orchestrator web server
 	@echo   benchmark          Execute full empirical parameter matrix and generate plots
 	@echo   analyze            Run empirical statistical analysis and generate vector plots

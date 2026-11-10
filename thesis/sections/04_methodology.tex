@@ -1,1 +1,41 @@
-% Methodology
+\section{Experimental Methodology}
+\label{sec:methodology}
+
+\subsection{Experimental Testbed & Hardware Environment}
+All benchmarks were executed on an edge-emulated container profile running Linux under an enforced memory ceiling of 512MB RAM and 1.0 virtual CPU core, matching typical edge deployment targets (such as Render Starter instances and AWS Lambda edge tiers).
+
+\begin{table}[h]
+\centering
+\caption{Experimental Hardware & Software Baseline}
+\label{tab:hardware_specs}
+\small
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Component} & \textbf{Specification / Version} \\ \hline
+Operating System   & Linux 6.x (Alpine 3.19 container) \\ \hline
+Container Limits   & 512 MB RAM Ceiling, 1.0 CPU Core \\ \hline
+Wasm Runtime       & Wazero v1.7.0 (Pure-Go, Zero-CGO) \\ \hline
+Host Language      & Go 1.21.x (GOMAXPROCS=2) \\ \hline
+Guest Language     & C++17 (Compiled to Wasm Core Spec 1.0) \\ \hline
+Statistical Tool   & Python 3.12 (NumPy 2.4, Matplotlib 3.10) \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Parameter Matrix & Workload Generation}
+The automated load testing harness (\texttt{scripts/run_benchmarks.py}) sweeps across an orthogonal multidimensional parameter matrix:
+\begin{itemize}
+    \item \textbf{Execution Paths:} Baseline Copy Path vs. Proposed Zero-Copy Path.
+    \item \textbf{Payload Dimensions ($S$):} 64 Bytes (micro-packet), 512 Bytes (standard event), 4,096 Bytes (page-aligned block), and 65,536 Bytes (streaming window).
+    \item \textbf{Concurrency Levels ($W$):} 1, 4, 8, 16, and 32 parallel worker goroutines.
+    \item \textbf{Iterations:} 1,000 to 10,000 invocations per condition, preceded by 50 warmup iterations to prime instruction caches.
+\end{itemize}
+
+\subsection{Data Collection & Metrics Pipeline}
+Each execution records a tuple $(t, m, S, W, \tau, h, \mu_{heap}, \mu_{sys}, N_{GC})$:
+\begin{itemize}
+    \item $\tau$: High-resolution execution duration measured in microseconds ($\mu\text{s}$) using monotonic clocks (\texttt{time.Now()}).
+    \item $h$: 64-bit cryptographic output checksum verifying mathematical consistency.
+    \item $\mu_{heap}, \mu_{sys}$: Go runtime memory telemetry queried via \texttt{runtime.ReadMemStats()}.
+    \item $N_{GC}$: Monotonically increasing garbage collection cycle count.
+\end{itemize}
+Data points are streamed asynchronously via a non-blocking channel to \texttt{benchmarks/data/telemetry.csv} to prevent disk I/O latency from perturbing measurement fidelity.

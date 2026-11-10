@@ -1,5 +1,45 @@
-\documentclass{article}
+\documentclass[10pt,twocolumn]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=blue,
+}
+
+\title{\textbf{Evaluating Zero-Copy Execution and Custom Memory Allocation for Ultra-Low Latency WebAssembly Workloads in Constrained Edge Environments}}
+
+\author{
+  \textbf{Rudranarayan Jena}\\
+  Voxion Labs -- Systems \& Systems Virtualization Research\\
+  \texttt{rudrajena440@gmail.com}
+}
+
+\date{\today}
+
 \begin{document}
-\title{VXR-Thesis}
+
 \maketitle
+
+\input{sections/01_abstract.tex}
+\input{sections/02_introduction.tex}
+\input{sections/03_architecture.tex}
+\input{sections/04_methodology.tex}
+\input{sections/05_results.tex}
+\input{sections/06_conclusion.tex}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
 \end{document}
