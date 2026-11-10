@@ -2,10 +2,21 @@
   "schema_version": "1.0.0",
   "repository": "Voxion-Labs/VXR-Thesis",
   "branch": "main",
-  "last_updated": "2026-11-10T07:32:12.933774+00:00",
-  "total_commits": 9,
-  "latest_sha": "d20b7ecd517b434b592a795c686b199c2c6a1918",
+  "last_updated": "2026-11-10T07:32:56.610799+00:00",
+  "total_commits": 10,
+  "latest_sha": "f76e67f8e6740a054e3fc4ab9a83d6f01903be7d",
   "commits": [
+    {
+      "sha": "f76e67f8e6740a054e3fc4ab9a83d6f01903be7d",
+      "short_sha": "f76e67f",
+      "date": "2026-11-10T13:02:31+05:30",
+      "author": "liambrooks-lab",
+      "subject": "docs: update research readme, fix github pages docs deployment, and configure render free tier hosting",
+      "files_changed": 21,
+      "insertions": 912,
+      "deletions": 115,
+      "manifest_file": "manifests/commits/f76e67f8e6740a054e3fc4ab9a83d6f01903be7d.json"
+    },
     {
       "sha": "d20b7ecd517b434b592a795c686b199c2c6a1918",
       "short_sha": "d20b7ec",

@@ -1,0 +1,121 @@
+{
+  "sha": "f76e67f8e6740a054e3fc4ab9a83d6f01903be7d",
+  "short_sha": "f76e67f",
+  "tree": "af653a47d1c9aef55fc31d54239c0114aefa7de8",
+  "parents": [
+    "eeef9cb07167ebb96e9920502eb181684cd6281d"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T13:02:31+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-10T13:02:31+05:30"
+  },
+  "subject": "docs: update research readme, fix github pages docs deployment, and configure render free tier hosting",
+  "body": "",
+  "message": "docs: update research readme, fix github pages docs deployment, and configure render free tier hosting",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/f76e67f8e6740a054e3fc4ab9a83d6f01903be7d",
+  "stats": {
+    "files_changed": 21,
+    "insertions": 912,
+    "deletions": 115
+  },
+  "files_count": 21,
+  "files": [
+    {
+      "status": "A",
+      "path": ".nojekyll"
+    },
+    {
+      "status": "A",
+      "path": "CONTRIBUTING.md"
+    },
+    {
+      "status": "M",
+      "path": "Dockerfile"
+    },
+    {
+      "status": "M",
+      "path": "README.md"
+    },
+    {
+      "status": "M",
+      "path": "cmd/vxr-server/main.go"
+    },
+    {
+      "status": "A",
+      "path": "docs/.nojekyll"
+    },
+    {
+      "status": "A",
+      "path": "docs/assets/Voxion_Labs_Logo.png"
+    },
+    {
+      "status": "A",
+      "path": "docs/assets/latency_cdf.png"
+    },
+    {
+      "status": "A",
+      "path": "docs/assets/memory_isolation_timeline.png"
+    },
+    {
+      "status": "A",
+      "path": "docs/assets/rudranarayan_jena.png"
+    },
+    {
+      "status": "A",
+      "path": "docs/assets/tail_latency_concurrency.png"
+    },
+    {
+      "status": "A",
+      "path": "docs/assets/throughput_scaling.png"
+    },
+    {
+      "status": "A",
+      "path": "docs/index.html"
+    },
+    {
+      "status": "A",
+      "path": "docs/style.css"
+    },
+    {
+      "status": "M",
+      "path": "internal/web/router.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/web/web_test.go"
+    },
+    {
+      "status": "A",
+      "path": "manifests/commits/eeef9cb07167ebb96e9920502eb181684cd6281d.json"
+    },
+    {
+      "status": "M",
+      "path": "manifests/manifest.json"
+    },
+    {
+      "status": "A",
+      "path": "render.yaml"
+    },
+    {
+      "status": "A",
+      "path": "research/Voxion_Labs_Logo.png"
+    },
+    {
+      "status": "A",
+      "path": "research/rudranarayan_jena.png"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-10T07:32:56.610518+00:00",
+    "generator_version": "1.0.0"
+  }
+}
