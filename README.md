@@ -24,10 +24,10 @@
 ---
 
 <p align="center">
-  <a href="https://vxr-thesis.onrender.com" target="_blank"><strong>Live Interactive Dashboard (Render)</strong></a> · 
-  <a href="https://voxion-labs.github.io/VXR-Thesis/" target="_blank"><strong>Interactive Research Portal (GitHub Pages)</strong></a> · 
-  <a href="https://github.com/Voxion-Labs/VXR-Thesis/blob/main/thesis/main.tex" target="_blank"><strong>Read Academic Paper (LaTeX)</strong></a> · 
-  <a href="https://github.com/Voxion-Labs/VXR-Thesis" target="_blank"><strong>Source Code Repository</strong></a>
+  <a href="https://vxr-thesis.onrender.com" target="_blank"><strong>Prototype</strong></a> · 
+  <a href="https://voxion-labs.github.io/VXR-Thesis/" target="_blank"><strong>Interactive Research Portal</strong></a> · 
+  <a href="https://voxion-labs.github.io/VXR-Thesis/paper/VXR-Thesis_Research_Paper.pdf" target="_blank"><strong>Read Research Paper (PDF)</strong></a> · 
+  <a href="https://github.com/Voxion-Labs/VXR-Thesis/blob/main/thesis/main.tex" target="_blank"><strong>LaTeX Academic Paper</strong></a> · 
 </p>
 
 ---
@@ -244,9 +244,9 @@ To enable instant auto-deployment whenever you push to `main`:
 <td style="border: none; vertical-align: middle;">
   <strong><font size="4">Rudranarayan Jena</font></strong><br/>
   <em>Founder, <a href="https://github.com/Voxion-Labs" target="_blank">Voxion Labs</a></em><br/>
-  <em>Academic Profile: <a href="https://github.com/liambrooks-lab" target="_blank">@liambrooks-lab</a></em><br/><br/>
+  <em>Academic Profile: <a href="https://github.com/R-Jena" target="_blank">@R-Jena</a></em><br/><br/>
   <p style="margin: 0; color: #94a3b8; font-size: 0.9em; max-width: 480px;">
-    Systems researcher in low-level runtimes, deterministic memory architectures, and edge computing. Currently directing the <strong>VXR-Thesis</strong> initiative to prove zero-copy execution models for WebAssembly workloads on memory-constrained edge infrastructures.
+    Independent researcher in low-level runtimes, deterministic memory architectures, and edge computing. Currently directing the <strong>VXR-Thesis</strong> initiative to prove zero-copy execution models for WebAssembly workloads on memory-constrained edge infrastructures.
   </p>
 </td>
 </tr>
@@ -267,7 +267,7 @@ If you reference this work or utilize the VXR-Thesis systems architecture in you
   volume      = {4},
   number      = {1},
   pages       = {1--12},
-  institution = {Voxion Labs Systems Research Group},
+  institution = {Voxion eXperimental Research},
   url         = {https://voxion-labs.github.io/VXR-Thesis/}
 }
 ```
@@ -285,7 +285,7 @@ If you reference this work or utilize the VXR-Thesis systems architecture in you
 
 This repository and its underlying WebAssembly/C++ kernel are proprietary intellectual property. 
 
-VXR-Thesis operates under the **Voxion Labs Proprietary Research License (VL-PRL)**. 
+VXR-Thesis operates under the **Voxion Labs Master Proprietary License (VL-MPL**. 
 Open-source usage, commercial exploitation, or unauthorized redistribution is strictly prohibited.
 
 The full license text is available in the [LICENSE](LICENSE) directive.

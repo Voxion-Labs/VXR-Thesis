@@ -15,7 +15,7 @@ else
   COMMIT_MSG := $(MSG)
 endif
 
-.PHONY: help push rebase sync manifest manifest-backfill build-wasm verify-wasm verify-thesis run-server benchmark analyze test test-cpp status
+.PHONY: help push rebase sync manifest manifest-backfill build-wasm verify-wasm verify-thesis build-paper run-server benchmark analyze test test-cpp status
 
 # Default target
 all: help
@@ -108,6 +108,11 @@ test-cpp:
 verify-thesis:
 	@echo [VXR] Validating LaTeX academic thesis and citations...
 	python scripts/verify_thesis.py
+
+## build-paper: Generate 9-page formal academic publication PDF via ReportLab
+build-paper:
+	@echo [VXR] Compiling formal 9-page research paper PDF...
+	python scripts/generate_research_paper.py
 
 ## test: Vet Go codebase, execute C++ tests, verify Wasm ABI, test thesis, and verify Python scripts
 test: test-cpp verify-wasm verify-thesis
