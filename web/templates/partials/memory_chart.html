@@ -1,7 +1,7 @@
 <div class="gauge-wrapper">
   <div class="gauge-labels">
     <span>Edge Memory Utilization (512MB RAM Ceiling)</span>
-    <span><strong>{{printf "%.2f" .MemoryPressurePct}}%</strong></span>
+    <span class="gauge-pct"><strong>{{printf "%.2f" .MemoryPressurePct}}%</strong></span>
   </div>
   <div class="gauge-bar-bg">
     <div class="gauge-bar-fill" style="width: {{printf "%.1f" .MemoryPressurePct}}%;"></div>

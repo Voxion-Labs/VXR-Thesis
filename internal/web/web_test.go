@@ -37,6 +37,10 @@ func setupTestServer(t *testing.T) http.Handler {
 		t.Fatalf("failed to create CSV writer: %v", err)
 	}
 
+	t.Cleanup(func() {
+		_ = os.Remove("benchmarks/data/test_telemetry.csv")
+	})
+
 	return web.NewRouter(executor, monitor, writer)
 }
 
@@ -96,6 +100,28 @@ func TestWebEndpoints(t *testing.T) {
 	}
 	if !strings.Contains(recTrigger.Body.String(), "Workload Finished") {
 		t.Errorf("expected output to contain 'Workload Finished', got: %s", recTrigger.Body.String())
+	}
+
+	// 4b. Test Trigger with Custom Parameter Inputs
+	formCustom := url.Values{
+		"mode":               {"both"},
+		"concurrency":        {"4"},
+		"custom_concurrency": {"3"},
+		"payload":            {"4096"},
+		"custom_payload":     {"2048"},
+		"iterations":         {"5000"},
+		"custom_iterations":  {"150"},
+	}
+	reqCustom := httptest.NewRequest(http.MethodPost, "/api/benchmark/trigger", strings.NewReader(formCustom.Encode()))
+	reqCustom.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	recCustom := httptest.NewRecorder()
+	router.ServeHTTP(recCustom, reqCustom)
+
+	if recCustom.Code != http.StatusOK {
+		t.Errorf("expected status 200 for custom trigger, got %d", recCustom.Code)
+	}
+	if !strings.Contains(recCustom.Body.String(), "Workers: 3") || !strings.Contains(recCustom.Body.String(), "2048 B") {
+		t.Errorf("expected custom parameters to be parsed and executed, got: %s", recCustom.Body.String())
 	}
 
 	// 5. Test Cloud Health Endpoints (/health and /healthz)

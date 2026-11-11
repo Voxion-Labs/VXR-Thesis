@@ -87,19 +87,44 @@ func (h *Handler) HandleTriggerBenchmark(w http.ResponseWriter, r *http.Request)
 		mode = "both"
 	}
 
-	concurrency, _ := strconv.Atoi(r.FormValue("concurrency"))
+	// Parse Concurrency: custom overrides preset dropdown
+	concurrency, _ := strconv.Atoi(r.FormValue("custom_concurrency"))
+	if concurrency <= 0 {
+		concurrency, _ = strconv.Atoi(r.FormValue("concurrency"))
+	}
 	if concurrency <= 0 {
 		concurrency = 4
 	}
+	if concurrency > 32 {
+		concurrency = 32
+	}
 
-	iterations, _ := strconv.Atoi(r.FormValue("iterations"))
+	// Parse Iterations: custom overrides preset dropdown
+	iterations, _ := strconv.Atoi(r.FormValue("custom_iterations"))
+	if iterations <= 0 {
+		iterations, _ = strconv.Atoi(r.FormValue("iterations"))
+	}
 	if iterations <= 0 {
 		iterations = 2000
 	}
+	if iterations > 50000 {
+		iterations = 50000
+	}
 
-	payloadSize, _ := strconv.Atoi(r.FormValue("payload"))
+	// Parse Payload Size: custom overrides preset dropdown
+	payloadSize, _ := strconv.Atoi(r.FormValue("custom_payload"))
+	if payloadSize <= 0 {
+		payloadSize, _ = strconv.Atoi(r.FormValue("payload"))
+	}
 	if payloadSize <= 0 {
 		payloadSize = 4096
+	}
+	// Safe clamp for linear memory ring buffer bounds (16B to 64KB)
+	if payloadSize < 16 {
+		payloadSize = 16
+	}
+	if payloadSize > 65536 {
+		payloadSize = 65536
 	}
 
 	ctx := context.Background()
@@ -143,63 +168,100 @@ func (h *Handler) HandleTriggerBenchmark(w http.ResponseWriter, r *http.Request)
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
+	payloadStr := fmt.Sprintf("%d B", payloadSize)
+	if payloadSize >= 1024 && payloadSize%1024 == 0 {
+		payloadStr = fmt.Sprintf("%d KB", payloadSize/1024)
+	}
+
 	if baseSummary != nil && zeroSummary != nil {
-		speedup := baseSummary.MeanLatencyUs / zeroSummary.MeanLatencyUs
-		p99Diff := ((baseSummary.P99LatencyUs - zeroSummary.P99LatencyUs) / baseSummary.P99LatencyUs) * 100.0
+		speedup := 1.0
+		if zeroSummary.MeanLatencyUs > 0.001 {
+			speedup = baseSummary.MeanLatencyUs / zeroSummary.MeanLatencyUs
+		} else if baseSummary.MeanLatencyUs > 0.001 {
+			speedup = baseSummary.MeanLatencyUs / 0.1
+		}
+
+		p99Diff := 0.0
+		if baseSummary.P99LatencyUs > 0.001 {
+			p99Diff = ((baseSummary.P99LatencyUs - zeroSummary.P99LatencyUs) / baseSummary.P99LatencyUs) * 100.0
+		}
 
 		fmt.Fprintf(w, `
-		<div style="display: flex; flex-direction: column; gap: 8px;">
-			<div style="color: var(--accent-cyan); font-weight: bold;">
-				✔ Workload Finished: %d operations injected (Concurrency: %d, Payload: %d B)
+		<div class="result-summary">
+			<div class="result-header">
+				<span class="result-badge">✔ Workload Finished: In-Place Execution Completed</span>
+				<span class="result-meta">Workers: %d | Payload: %s (%d B) | Invocations: %d ops</span>
 			</div>
-			<table style="width: 100%%; border-collapse: collapse; margin-top: 6px;">
+			<table class="result-table">
 				<thead>
-					<tr style="color: var(--text-dim); text-align: left; border-bottom: 1px solid var(--border-dim);">
-						<th style="padding: 4px 8px;">Path</th>
-						<th style="padding: 4px 8px;">Mean Latency</th>
-						<th style="padding: 4px 8px;">p50 (Median)</th>
-						<th style="padding: 4px 8px;">p99 Tail</th>
-						<th style="padding: 4px 8px;">Throughput</th>
+					<tr>
+						<th>Execution Pipeline</th>
+						<th>Mean Latency</th>
+						<th>p50 (Median)</th>
+						<th>p99 Tail Latency</th>
+						<th>Effective Throughput</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr style="border-bottom: 1px solid var(--border-dim);">
-						<td style="padding: 4px 8px;">Baseline (Copy+Alloc)</td>
-						<td style="padding: 4px 8px;">%.2f µs</td>
-						<td style="padding: 4px 8px;">%.2f µs</td>
-						<td style="padding: 4px 8px; color: var(--accent-amber);">%.2f µs</td>
-						<td style="padding: 4px 8px;">%.2f MB/s</td>
+					<tr class="row-baseline">
+						<td>Baseline (Copy + Alloc)</td>
+						<td>%.2f µs</td>
+						<td>%.2f µs</td>
+						<td class="text-amber">%.2f µs</td>
+						<td>%.2f MB/s</td>
 					</tr>
-					<tr>
-						<td style="padding: 4px 8px; color: var(--accent-cyan); font-weight: bold;">Zero-Copy In-Place</td>
-						<td style="padding: 4px 8px; color: var(--accent-green); font-weight: bold;">%.2f µs</td>
-						<td style="padding: 4px 8px;">%.2f µs</td>
-						<td style="padding: 4px 8px; color: var(--accent-green); font-weight: bold;">%.2f µs</td>
-						<td style="padding: 4px 8px;">%.2f MB/s</td>
+					<tr class="row-zerocopy">
+						<td><strong>Zero-Copy (Direct Slicing)</strong></td>
+						<td><strong>%.2f µs</strong></td>
+						<td><strong>%.2f µs</strong></td>
+						<td class="text-green"><strong>%.2f µs</strong></td>
+						<td><strong>%.2f MB/s</strong></td>
 					</tr>
 				</tbody>
 			</table>
-			<div style="margin-top: 8px; padding: 6px 10px; background: var(--bg-card); border-radius: 4px; border: 1px solid var(--border-dim); font-size: 11px;">
-				<span style="color: var(--accent-green); font-weight: bold;">Speedup: %.2fx faster</span> | 
-				<span style="color: var(--accent-cyan);">p99 Delta: %.1f%% drop</span> | 
-				<span>Cryptographic Checksum: 0x%X (VERIFIED)</span>
+			<div class="result-stats-bar">
+				<span class="stat-pill speedup">Speedup: <strong>%.2fx faster</strong></span>
+				<span class="stat-pill delta">p99 Delta: <strong>%.1f%% reduction</strong></span>
+				<span class="stat-pill checksum">Checksum: <code>0x%X</code> (VERIFIED)</span>
 			</div>
 		</div>
-		`, baseSummary.TotalOps, concurrency, payloadSize,
+		`, concurrency, payloadStr, payloadSize, iterations,
 			baseSummary.MeanLatencyUs, baseSummary.P50LatencyUs, baseSummary.P99LatencyUs, baseSummary.ThroughputMBps,
 			zeroSummary.MeanLatencyUs, zeroSummary.P50LatencyUs, zeroSummary.P99LatencyUs, zeroSummary.ThroughputMBps,
 			speedup, p99Diff, zeroSummary.LastChecksum)
 	} else if zeroSummary != nil {
 		fmt.Fprintf(w, `
-		<div style="color: var(--accent-green); font-weight: bold;">
-			✔ Zero-Copy In-Place Run: %d ops | Mean: %.2f µs | p99: %.2f µs | Throughput: %.2f MB/s
+		<div class="result-summary">
+			<div class="result-header">
+				<span class="result-badge">✔ Workload Finished: Zero-Copy Execution Completed</span>
+				<span class="result-meta">Workers: %d | Payload: %s (%d B) | Invocations: %d ops</span>
+			</div>
+			<div class="result-stats-bar">
+				<span>Mean: <strong>%.2f µs</strong></span>
+				<span>p50: <strong>%.2f µs</strong></span>
+				<span>p99: <strong>%.2f µs</strong></span>
+				<span>Throughput: <strong>%.2f MB/s</strong></span>
+				<span class="stat-pill checksum">Checksum: <code>0x%X</code> (VERIFIED)</span>
+			</div>
 		</div>
-		`, zeroSummary.TotalOps, zeroSummary.MeanLatencyUs, zeroSummary.P99LatencyUs, zeroSummary.ThroughputMBps)
+		`, concurrency, payloadStr, payloadSize, iterations,
+			zeroSummary.MeanLatencyUs, zeroSummary.P50LatencyUs, zeroSummary.P99LatencyUs, zeroSummary.ThroughputMBps, zeroSummary.LastChecksum)
 	} else if baseSummary != nil {
 		fmt.Fprintf(w, `
-		<div style="color: var(--accent-amber); font-weight: bold;">
-			✔ Baseline Copy Run: %d ops | Mean: %.2f µs | p99: %.2f µs | Throughput: %.2f MB/s
+		<div class="result-summary">
+			<div class="result-header">
+				<span class="result-badge text-amber">✔ Workload Finished: Baseline Copy Completed</span>
+				<span class="result-meta">Workers: %d | Payload: %s (%d B) | Invocations: %d ops</span>
+			</div>
+			<div class="result-stats-bar">
+				<span>Mean: <strong>%.2f µs</strong></span>
+				<span>p50: <strong>%.2f µs</strong></span>
+				<span>p99: <strong>%.2f µs</strong></span>
+				<span>Throughput: <strong>%.2f MB/s</strong></span>
+				<span class="stat-pill checksum">Checksum: <code>0x%X</code> (VERIFIED)</span>
+			</div>
 		</div>
-		`, baseSummary.TotalOps, baseSummary.MeanLatencyUs, baseSummary.P99LatencyUs, baseSummary.ThroughputMBps)
+		`, concurrency, payloadStr, payloadSize, iterations,
+			baseSummary.MeanLatencyUs, baseSummary.P50LatencyUs, baseSummary.P99LatencyUs, baseSummary.ThroughputMBps, baseSummary.LastChecksum)
 	}
 }
