@@ -1,0 +1,61 @@
+{
+  "sha": "ba28dac015e02a700045ab1a6a5f4be208e733bb",
+  "short_sha": "ba28dac",
+  "tree": "739d6a350876142de25375d872e29d75521d4f23",
+  "parents": [
+    "b58a6f65b5be4e4f1cc22953f03eab5304b42bed"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-11T11:21:36+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-11T11:21:36+05:30"
+  },
+  "subject": "feat(publication): generate formal 9-page research paper PDF and link on portal",
+  "body": "",
+  "message": "feat(publication): generate formal 9-page research paper PDF and link on portal",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/ba28dac015e02a700045ab1a6a5f4be208e733bb",
+  "stats": {
+    "files_changed": 6,
+    "insertions": 1472,
+    "deletions": 13
+  },
+  "files_count": 6,
+  "files": [
+    {
+      "status": "M",
+      "path": "Makefile"
+    },
+    {
+      "status": "M",
+      "path": "README.md"
+    },
+    {
+      "status": "M",
+      "path": "docs/index.html"
+    },
+    {
+      "status": "A",
+      "path": "docs/paper/VXR-Thesis_Research_Paper.pdf"
+    },
+    {
+      "status": "A",
+      "path": "scripts/generate_research_paper.py"
+    },
+    {
+      "status": "A",
+      "path": "thesis/VXR-Thesis_Research_Paper.pdf"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-11T05:51:49.160213+00:00",
+    "generator_version": "1.0.0"
+  }
+}

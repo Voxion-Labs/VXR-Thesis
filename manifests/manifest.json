@@ -2,10 +2,21 @@
   "schema_version": "1.0.0",
   "repository": "Voxion-Labs/VXR-Thesis",
   "branch": "main",
-  "last_updated": "2026-11-10T08:16:49.398521+00:00",
-  "total_commits": 11,
-  "latest_sha": "dfe01cdf8527fd3bce4866baa3b5c9ac2ccd8245",
+  "last_updated": "2026-11-11T05:51:49.160457+00:00",
+  "total_commits": 12,
+  "latest_sha": "ba28dac015e02a700045ab1a6a5f4be208e733bb",
   "commits": [
+    {
+      "sha": "ba28dac015e02a700045ab1a6a5f4be208e733bb",
+      "short_sha": "ba28dac",
+      "date": "2026-11-11T11:21:36+05:30",
+      "author": "liambrooks-lab",
+      "subject": "feat(publication): generate formal 9-page research paper PDF and link on portal",
+      "files_changed": 6,
+      "insertions": 1472,
+      "deletions": 13,
+      "manifest_file": "manifests/commits/ba28dac015e02a700045ab1a6a5f4be208e733bb.json"
+    },
     {
       "sha": "dfe01cdf8527fd3bce4866baa3b5c9ac2ccd8245",
       "short_sha": "dfe01cd",
