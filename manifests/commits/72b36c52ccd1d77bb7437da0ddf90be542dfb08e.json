@@ -1,0 +1,65 @@
+{
+  "sha": "72b36c52ccd1d77bb7437da0ddf90be542dfb08e",
+  "short_sha": "72b36c5",
+  "tree": "da2bcdd3977dfe5fbd20ca43c1a141d46c64441c",
+  "parents": [
+    "0dd8b024ad7a25eb058ae57c5b267efdf932aab4"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-11T11:47:38+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-11T11:47:38+05:30"
+  },
+  "subject": "feat(portal): refine clean academic theme, finalize publication paper layout, and align thesis metadata",
+  "body": "",
+  "message": "feat(portal): refine clean academic theme, finalize publication paper layout, and align thesis metadata",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/72b36c52ccd1d77bb7437da0ddf90be542dfb08e",
+  "stats": {
+    "files_changed": 7,
+    "insertions": 185,
+    "deletions": 1063
+  },
+  "files_count": 7,
+  "files": [
+    {
+      "status": "M",
+      "path": "Makefile"
+    },
+    {
+      "status": "M",
+      "path": "docs/index.html"
+    },
+    {
+      "status": "M",
+      "path": "docs/paper/VXR-Thesis_Research_Paper.pdf"
+    },
+    {
+      "status": "M",
+      "path": "docs/style.css"
+    },
+    {
+      "status": "D",
+      "path": "scripts/generate_research_paper.py"
+    },
+    {
+      "status": "M",
+      "path": "thesis/VXR-Thesis_Research_Paper.pdf"
+    },
+    {
+      "status": "M",
+      "path": "thesis/main.tex"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-11T06:17:51.436973+00:00",
+    "generator_version": "1.0.0"
+  }
+}

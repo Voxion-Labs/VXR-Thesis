@@ -2,10 +2,21 @@
   "schema_version": "1.0.0",
   "repository": "Voxion-Labs/VXR-Thesis",
   "branch": "main",
-  "last_updated": "2026-11-11T05:51:49.160457+00:00",
-  "total_commits": 12,
-  "latest_sha": "ba28dac015e02a700045ab1a6a5f4be208e733bb",
+  "last_updated": "2026-11-11T06:17:51.437212+00:00",
+  "total_commits": 13,
+  "latest_sha": "72b36c52ccd1d77bb7437da0ddf90be542dfb08e",
   "commits": [
+    {
+      "sha": "72b36c52ccd1d77bb7437da0ddf90be542dfb08e",
+      "short_sha": "72b36c5",
+      "date": "2026-11-11T11:47:38+05:30",
+      "author": "liambrooks-lab",
+      "subject": "feat(portal): refine clean academic theme, finalize publication paper layout, and align thesis metadata",
+      "files_changed": 7,
+      "insertions": 185,
+      "deletions": 1063,
+      "manifest_file": "manifests/commits/72b36c52ccd1d77bb7437da0ddf90be542dfb08e.json"
+    },
     {
       "sha": "ba28dac015e02a700045ab1a6a5f4be208e733bb",
       "short_sha": "ba28dac",
