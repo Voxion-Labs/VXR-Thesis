@@ -1,0 +1,69 @@
+{
+  "sha": "e4e9e5faf96b47fb434a6a8d61e28377dc2edbdb",
+  "short_sha": "e4e9e5f",
+  "tree": "f9fa26d9a1fc35fcba9e9dd6b59148543e6b3288",
+  "parents": [
+    "8d775fe24fbf3a8bc10a1fe121cc15305692f53b"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-11T13:03:52+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-11T13:03:56+05:30"
+  },
+  "subject": "feat(prototype): redesign minimalist research UI, enable custom workload injection, and polish paper typography",
+  "body": "",
+  "message": "feat(prototype): redesign minimalist research UI, enable custom workload injection, and polish paper typography",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/e4e9e5faf96b47fb434a6a8d61e28377dc2edbdb",
+  "stats": {
+    "files_changed": 8,
+    "insertions": 772,
+    "deletions": 402
+  },
+  "files_count": 8,
+  "files": [
+    {
+      "status": "M",
+      "path": "docs/paper/VXR-Thesis_Research_Paper.pdf"
+    },
+    {
+      "status": "M",
+      "path": "internal/web/handlers.go"
+    },
+    {
+      "status": "M",
+      "path": "internal/web/web_test.go"
+    },
+    {
+      "status": "M",
+      "path": "thesis/VXR-Thesis_Research_Paper.pdf"
+    },
+    {
+      "status": "M",
+      "path": "web/static/css/style.css"
+    },
+    {
+      "status": "M",
+      "path": "web/templates/index.html"
+    },
+    {
+      "status": "M",
+      "path": "web/templates/partials/latency_metrics.html"
+    },
+    {
+      "status": "M",
+      "path": "web/templates/partials/memory_chart.html"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-11T07:34:06.254916+00:00",
+    "generator_version": "1.0.0"
+  }
+}
