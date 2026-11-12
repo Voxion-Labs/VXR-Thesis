@@ -8,7 +8,7 @@ Voxion Labs operates on a strict paradigm of high-performance determinism, memor
 All code introduced into the Voxion Labs ecosystem is subjected to ruthless architectural scrutiny:
 * **Absolute Determinism:** Systems must execute with mathematical predictability. Uncontrolled garbage collection (GC) pauses, main-thread blocking, and unhandled asynchronous race conditions are strictly prohibited.
 * **Algorithmic First-Principles:** We do not rely on bloated NPM packages or unoptimized external libraries when a native, O(1) or O(N) mathematical solution exists. 
-* **Zero-Trust Memory Management:** Whether in WebAssembly, C++, or Golang backends, memory leaks and unchecked buffer allocations are treated as critical failures. Prove your memory footprint via telemetry logs before proposing state mutations.
+* **Zero-Trust Memory Management:** Whether in WebAssembly, C++, Pyhon, Node.js or Golang backends, memory leaks and unchecked buffer allocations are treated as critical failures. Prove your memory footprint via telemetry logs before proposing state mutations.
 
 ## 2. Multi-Repository PR Governance
 A Pull Request (PR) to any Voxion Labs repository is a request to alter proprietary infrastructure. It must be structured with clinical precision:
