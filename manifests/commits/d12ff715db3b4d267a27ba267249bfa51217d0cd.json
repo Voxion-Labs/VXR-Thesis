@@ -1,0 +1,57 @@
+{
+  "sha": "d12ff715db3b4d267a27ba267249bfa51217d0cd",
+  "short_sha": "d12ff71",
+  "tree": "1ac84a1bad016934afc30dfe0df7225cf783aeba",
+  "parents": [
+    "e374b21ef6f79b094ea46a12a1a7a01dfb295ff6"
+  ],
+  "author": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-12T11:01:54+05:30"
+  },
+  "committer": {
+    "name": "liambrooks-lab",
+    "email": "rudrajena440@gmail.com",
+    "date": "2026-11-12T11:02:39+05:30"
+  },
+  "subject": "docs(paper): unify organization naming to Voxion eXperimental Research and update governance docs",
+  "body": "",
+  "message": "docs(paper): unify organization naming to Voxion eXperimental Research and update governance docs",
+  "branch": "main",
+  "repository": "Voxion-Labs/VXR-Thesis",
+  "url": "https://github.com/Voxion-Labs/VXR-Thesis/commit/d12ff715db3b4d267a27ba267249bfa51217d0cd",
+  "stats": {
+    "files_changed": 5,
+    "insertions": 78,
+    "deletions": 75
+  },
+  "files_count": 5,
+  "files": [
+    {
+      "status": "M",
+      "path": "CONTRIBUTING.md"
+    },
+    {
+      "status": "M",
+      "path": "LICENSE"
+    },
+    {
+      "status": "M",
+      "path": "docs/paper/VXR-Thesis_Research_Paper.pdf"
+    },
+    {
+      "status": "M",
+      "path": "thesis/VXR-Thesis_Research_Paper.pdf"
+    },
+    {
+      "status": "M",
+      "path": "thesis/main.tex"
+    }
+  ],
+  "bot_manifest": {
+    "recorded_by": "R-Jena",
+    "recorded_at": "2026-11-12T05:33:31.588138+00:00",
+    "generator_version": "1.0.0"
+  }
+}
